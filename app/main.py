@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import cluster, recommend
+from app.routers import cluster, recommend, product
 from app.database import Base, engine
 
 Base.metadata.create_all(bind=engine)
@@ -11,6 +11,7 @@ app = FastAPI(
 
 app.include_router(cluster.router)
 app.include_router(recommend.router)
+app.include_router(product.router)
 
 @app.get("/")
 def root():

@@ -7,7 +7,9 @@ import numpy as np
 from app.database import get_db
 from app.models.product import Product
 from app.models.log import PredictionLog
+from app.models.user import User
 from app.schemas.recommend import PredictionRequest, RecommendationResponse
+from app.routers.auth import get_current_user 
 
 router = APIRouter(prefix="/recommend", tags=["Recommendation"])
 
@@ -18,8 +20,16 @@ try:
 except Exception:
     scaler, kmeans, topN = None, None, {}
 
+@router.get("/by_cluster/{cid}")
+def recommend_by_cluster(cid: int):
+    return {"cluster": cid, "recommendations": topN.get(cid, [])}
+
 @router.post("/user", response_model=RecommendationResponse)
-def recommend_user(data: PredictionRequest, db: Session = Depends(get_db)):
+def recommend_user(
+    data: PredictionRequest, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     if not scaler or not kmeans:
         raise HTTPException(status_code=500, detail="Model ML belum dimuat")
 
@@ -62,7 +72,7 @@ def recommend_user(data: PredictionRequest, db: Session = Depends(get_db)):
         recs_clean = jsonable_encoder(final_recs)
 
         new_log = PredictionLog(
-            user_id=0,
+            user_id=current_user.user_id,
             predicted_cluster=cluster,
             recommended_items=recs_clean
         )

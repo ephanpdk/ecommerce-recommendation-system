@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # 1. Container Database
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ecommerce_db
+    ports:
+      - "5432:5432"  # Biar lu tetap bisa akses via pgAdmin di Windows
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Container Aplikasi
+  web:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/code  # Hot-reload: Codingan di Windows langsung ngefek ke Docker
+    ports:
+      - "8000:8000"
+    environment:
+      # PERHATIKAN: Hostnya 'db', bukan 'localhost'
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ecommerce_db
+      - SECRET_KEY=rahasiadapur12345
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data: # Volume biar data gak hilang pas container dimatiin

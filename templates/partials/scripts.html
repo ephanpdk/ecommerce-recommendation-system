@@ -35,25 +35,29 @@
         }
     }
 
-    // --- NAVIGATION LOGIC FIXED ---
+    function handleLogin() {
+        doAuth('login');
+    }
+
+    function handleRegister() {
+        doAuth('register');
+    }
+
+
     function switchView(viewName) {
-        // 1. Hide all views
         ['view-dashboard', 'view-insights', 'view-pipeline'].forEach(id => {
             const el = document.getElementById(id);
             if(el) el.classList.add('hidden');
         });
         
-        // 2. Show target view
         const target = document.getElementById(`view-${viewName}`);
         if(target) target.classList.remove('hidden');
 
-        // 3. Reset Nav Buttons
         ['nav-dashboard', 'nav-insights', 'nav-pipeline'].forEach(id => {
             const btn = document.getElementById(id);
             if(btn) btn.className = "px-4 py-1.5 rounded-md text-xs font-bold text-slate-500 hover:text-slate-700 transition flex items-center gap-2";
         });
 
-        // 4. Active Nav Style
         const activeBtn = document.getElementById(`nav-${viewName}`);
         if(activeBtn) {
             activeBtn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-md";
@@ -62,7 +66,6 @@
              if(dashBtn) dashBtn.className = "px-4 py-1.5 rounded-md text-xs font-bold transition flex items-center gap-2 bg-white text-indigo-600 shadow-sm";
         }
 
-        // 5. Trigger Data Render for Insights
         if(viewName === 'insights') {
             if(!metrics) {
                 loadMetrics().then(() => {
@@ -85,7 +88,6 @@
 
     function showInsights() { switchView('insights'); }
 
-    // --- CHART RENDERING FIXED ---
     async function loadMetrics() {
         try {
             const res = await fetch(`${API}/cluster/metrics`);
@@ -152,7 +154,6 @@
         }
     }
 
-    // --- UTILS (Auth, Toast, etc) ---
     function renderAuth() {
         const area = document.getElementById('auth-section');
         if(!area) return;

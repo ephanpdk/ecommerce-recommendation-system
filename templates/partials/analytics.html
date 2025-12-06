@@ -1,0 +1,75 @@
+<div class="mb-8 border-b border-slate-200 pb-6 flex justify-between items-end">
+    <div>
+        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Model Laboratory</h2>
+        <p class="text-slate-500 mt-2">Comprehensive performance metrics & centroid analysis.</p>
+    </div>
+    <div class="flex gap-4">
+        <div class="text-right">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Silhouette</div>
+            <div id="valSil" class="text-2xl font-mono font-bold text-emerald-600">-</div>
+        </div>
+        <div class="text-right pl-6 border-l border-slate-200">
+            <div class="text-[10px] font-bold text-slate-400 uppercase">Inertia</div>
+            <div id="valInertia" class="text-2xl font-mono font-bold text-indigo-600">-</div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-xl">
+        <div class="text-[10px] uppercase font-bold text-emerald-600 mb-1">Silhouette Score</div>
+        <div id="metric-sil" class="text-2xl font-mono font-bold text-emerald-700">...</div>
+        <div class="text-[10px] text-emerald-600/70 mt-1">Cluster Separation</div>
+    </div>
+    <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+        <div class="text-[10px] uppercase font-bold text-indigo-600 mb-1">Inertia (SSE)</div>
+        <div id="metric-inertia" class="text-2xl font-mono font-bold text-indigo-700">...</div>
+        <div class="text-[10px] text-indigo-600/70 mt-1">Compactness</div>
+    </div>
+    <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl">
+        <div class="text-[10px] uppercase font-bold text-blue-600 mb-1">Clusters (K)</div>
+        <div class="text-2xl font-mono font-bold text-blue-700">4</div>
+        <div class="text-[10px] text-blue-600/70 mt-1">Optimal Segments</div>
+    </div>
+    <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+        <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Features</div>
+        <div class="text-2xl font-mono font-bold text-slate-700">8</div>
+        <div class="text-[10px] text-slate-400 mt-1">RFM + Behavioral</div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
+    <div class="md:col-span-8 space-y-8">
+        <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Elbow Method</h4>
+                <div class="h-64 relative"><canvas id="chart-elbow"></canvas></div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Centroid Radar</h4>
+                <div class="h-64 relative"><canvas id="chart-radar"></canvas></div>
+            </div>
+        </div>
+        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 font-bold text-xs text-slate-600 uppercase">Centroid Profiling (Real Values)</div>
+            <table class="w-full text-xs text-left text-slate-600">
+                <thead class="bg-white border-b border-slate-100 text-slate-400 uppercase font-semibold">
+                    <tr>
+                        <th class="px-6 py-3">Cluster</th>
+                        <th class="px-6 py-3 text-right">Monetary</th>
+                        <th class="px-6 py-3 text-right">Freq</th>
+                        <th class="px-6 py-3 text-right">Recency</th>
+                    </tr>
+                </thead>
+                <tbody id="table-centroids" class="divide-y divide-slate-50 text-slate-600 font-mono"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="md:col-span-4">
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full flex flex-col justify-center">
+            <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-6">Population Ratio</h4>
+            <div class="h-64 relative"><canvas id="chart-pie"></canvas></div>
+            <div class="mt-8 text-center text-xs text-slate-400">Total Samples: ~5,000</div>
+        </div>
+    </div>
+</div>

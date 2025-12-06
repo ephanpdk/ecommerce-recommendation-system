@@ -1,0 +1,28 @@
+<nav class="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="switchView('dashboard')">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/20 transition-transform group-hover:scale-105">
+                    <i class="fa-solid fa-network-wired text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-900 tracking-tight leading-none">Project ML: <span class="text-indigo-600">Segmentation</span></h1>
+                    <span class="text-[10px] font-bold text-slate-400 tracking-wider uppercase">K-Means Clustering Analysis</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex gap-2">
+                    <button onclick="switchView('pipeline')" id="nav-pipeline" class="px-3 py-1.5 text-xs font-bold text-slate-500 hover:text-indigo-600 border border-transparent hover:border-indigo-100 hover:bg-indigo-50 rounded-lg transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> PIPELINE
+                    </button>
+                    <button onclick="switchView('insights')" id="nav-insights" class="px-3 py-1.5 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg shadow-md transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> EVALUATION
+                    </button>
+                </div>
+                <div class="h-6 w-px bg-slate-200 mx-2"></div>
+                <div id="auth-section"></div>
+            </div>
+        </div>
+    </div>
+</nav>

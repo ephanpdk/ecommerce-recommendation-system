@@ -1,0 +1,244 @@
+<script>
+    const API = "http://127.0.0.1:8000";
+    const CLUSTERS = ["Newbie", "Window Shopper", "Loyalist", "Sultan"];
+    const THEMES = [
+        { bg: "bg-slate-50", border: "border-slate-200", text: "text-slate-700", icon: "fa-seedling", color: "text-slate-400" },
+        { bg: "bg-blue-50", border: "border-blue-200", text: "text-blue-700", icon: "fa-binoculars", color: "text-blue-500" },
+        { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", icon: "fa-handshake", color: "text-emerald-500" },
+        { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-900", icon: "fa-crown", color: "text-amber-500" }
+    ];
+    
+    let token = localStorage.getItem('token');
+    let user = localStorage.getItem('user');
+    let metrics = null;
+    let chartInstance=null, pieChartInstance=null, elbowChartInstance=null;
+    let sessionLogs = [];
+
+    function init() {
+        renderAuth();
+        bindSliders();
+        loadMetrics();
+        const savedLogs = localStorage.getItem('sessionLogs');
+        if(savedLogs) { JSON.parse(savedLogs).forEach(l => addLogToTable(l.cluster, l.money, l.time)); }
+    }
+
+    function switchView(viewName) {
+        document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+        document.getElementById(`view-${viewName}`).classList.remove('hidden');
+        
+        document.querySelectorAll('nav button').forEach(b => {
+            b.classList.replace('bg-slate-900', 'text-slate-500');
+            b.classList.replace('text-white', 'hover:text-indigo-600');
+            b.classList.remove('shadow-md');
+        });
+
+        if(viewName === 'dashboard') {
+            document.getElementById('nav-dashboard').classList.add('bg-white', 'text-indigo-600', 'shadow-sm');
+        } else {
+            const btn = document.getElementById(`nav-${viewName}`);
+            if(btn) {
+               btn.classList.remove('text-slate-500');
+               btn.classList.add('bg-slate-900', 'text-white', 'shadow-md');
+            }
+        }
+        
+        if(viewName === 'insights') {
+            if(!metrics) loadMetrics().then(renderCharts);
+            else setTimeout(renderCharts, 100); 
+        }
+    }
+
+    function toggleModal(id) { 
+        if(id === 'specsModal') { switchView('pipeline'); return; }
+        if(id === 'aboutModal') { switchView('pipeline'); return; }
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(el.classList.contains('hidden')) { el.classList.remove('hidden'); setTimeout(()=>{el.classList.remove('opacity-0');el.children[0].classList.remove('scale-95');},10); }
+        else { el.classList.add('opacity-0'); el.children[0].classList.add('scale-95'); setTimeout(()=>el.classList.add('hidden'),300); }
+    }
+
+    function renderAuth() {
+        const area = document.getElementById('auth-section');
+        if(token) {
+            const init = user ? user[0].toUpperCase() : 'U';
+            area.innerHTML = `<div class="flex items-center gap-3 ml-4 pl-4 border-l border-slate-200"><div class="text-right hidden sm:block"><div class="text-[10px] font-bold text-slate-400 uppercase">Active</div><div class="text-xs font-bold text-slate-900">${user}</div></div><div class="h-9 w-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-600 text-xs">${init}</div><button onclick="logout()" class="text-slate-400 hover:text-red-500 transition ml-1"><i class="fa-solid fa-power-off"></i></button></div>`;
+        } else {
+            area.innerHTML = `<button onclick="toggleModal('auth-modal')" class="ml-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-5 py-2 rounded-lg transition shadow-lg shadow-indigo-200">LOGIN</button>`;
+        }
+    }
+
+    async function doAuth(type) {
+        const email = type==='login' ? document.getElementById('auth-email').value : document.getElementById('reg-email').value;
+        const pass = type==='login' ? document.getElementById('auth-pass').value : document.getElementById('reg-pass').value;
+        const name = type==='register' ? document.getElementById('reg-name').value : null;
+        if(!email || !pass) return toast('Input required', 'error');
+        const endpoint = type==='login' ? '/auth/login' : '/auth/register';
+        const body = type==='login' ? {email, password: pass} : {email, password: pass, name};
+        try {
+            const res = await fetch(`${API}${endpoint}`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+            if(res.ok) {
+                if(type==='register') { toast('Account created', 'success'); switchAuth('login'); }
+                else { const data=await res.json(); localStorage.setItem('token', data.access_token); localStorage.setItem('user', email.split('@')[0]); token=data.access_token; location.reload(); }
+            } else toast('Authentication Failed', 'error');
+        } catch(e) { toast('Connection Error', 'error'); }
+    }
+
+    function logout() { localStorage.clear(); location.reload(); }
+    
+    function bindSliders() {
+        const updateVal = (id, val, pre='') => document.getElementById(`disp-${id.split('-')[1]}`).innerText = pre + val;
+        document.getElementById('in-money').addEventListener('input', (e) => updateVal(e.target.id, e.target.value, '$'));
+        document.getElementById('in-views').addEventListener('input', (e) => { updateVal(e.target.id, e.target.value); const cart=document.getElementById('in-cart'); cart.max=e.target.value; if(parseInt(cart.value)>parseInt(e.target.value)) { cart.value=e.target.value; updateVal('in-cart',e.target.value); } });
+        document.getElementById('in-cart').addEventListener('input', (e) => updateVal(e.target.id, e.target.value));
+    }
+    
+    function resetSim() {
+        document.getElementById('in-money').value=1000; document.getElementById('disp-money').innerText='$1000';
+        document.getElementById('in-freq').value=5; document.getElementById('in-rec').value=30;
+        document.getElementById('in-views').value=50; document.getElementById('disp-views').innerText='50';
+        document.getElementById('in-cart').value=15; document.getElementById('disp-cart').innerText='15';
+        toast('Simulator Reset', 'info');
+    }
+    
+    function switchAuth(type) {
+        const login=document.getElementById('form-login'), reg=document.getElementById('form-register'), tabL=document.getElementById('tab-login'), tabR=document.getElementById('tab-register');
+        if(type==='login') { login.classList.remove('hidden'); reg.classList.add('hidden'); tabL.classList.replace('bg-white','bg-white'); tabL.classList.add('shadow-sm'); tabR.classList.remove('shadow-sm','bg-white','text-slate-800'); }
+        else { login.classList.add('hidden'); reg.classList.remove('hidden'); tabR.classList.add('bg-white','text-slate-800','shadow-sm'); tabL.classList.remove('bg-white','text-slate-800','shadow-sm'); }
+    }
+
+    async function runPrediction() {
+        if(!token) { toggleModal('auth-modal'); toast('Login Required', 'error'); return; }
+        const payload = {
+            Monetary: parseFloat(document.getElementById('in-money').value),
+            Frequency: parseInt(document.getElementById('in-freq').value),
+            Recency: parseInt(document.getElementById('in-rec').value),
+            Page_Views: parseInt(document.getElementById('in-views').value),
+            Add_to_Cart_Count: parseInt(document.getElementById('in-cart').value),
+            Avg_Items: parseFloat(document.getElementById('in-avg').value),
+            Wishlist_Count: parseInt(document.getElementById('in-wish').value),
+            Unique_Products: Math.max(1, Math.ceil(parseInt(document.getElementById('in-freq').value)*0.5))
+        };
+        if(payload.Frequency <= 0) return toast('Frequency > 0 required', 'error');
+
+        document.getElementById('state-idle').classList.add('hidden');
+        document.getElementById('state-result').classList.remove('hidden');
+        
+        try {
+            const res = await fetch(`${API}/recommend/user`, { method:'POST', headers:{'Content-Type':'application/json', 'Authorization': `Bearer ${token}`}, body:JSON.stringify(payload) });
+            if(res.ok) { 
+                const data=await res.json(); 
+                renderResult(data); 
+                addLog(data.cluster, payload.Monetary); 
+                toast('Success', 'success'); 
+            }
+            else { if(res.status===401) logout(); else toast('Model Error', 'error'); }
+        } catch(e) { toast('Server Unreachable', 'error'); }
+    }
+
+    function renderResult(data) {
+        const theme = THEMES[data.cluster] || THEMES[0];
+        const name = CLUSTERS[data.cluster] || "Unknown";
+        
+        const card = document.getElementById('personaCard');
+        card.className = `relative bg-white rounded-2xl border ${theme.border} p-8 overflow-hidden shadow-sm transition-all duration-500 fade-enter`;
+        document.getElementById('cluster-name').innerText = name;
+        document.getElementById('cluster-name').className = `text-3xl font-bold ${theme.text} leading-none`;
+        const iconBox = document.getElementById('cluster-icon-box');
+        iconBox.className = `w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-sm ${theme.bg} ${theme.color} transition-colors duration-300`;
+        document.getElementById('cluster-icon').className = `fa-solid ${theme.icon}`;
+        document.getElementById('res-dist').innerText = data.metrics.distance_to_centroid.toFixed(4);
+        document.getElementById('res-conf').innerText = data.metrics.confidence_score + '%';
+        
+        const drivers = data.metrics.feature_drivers || [];
+        const list = document.getElementById('driver-list');
+        if(drivers.length) {
+            list.innerHTML = drivers.map(d => `<li class="flex items-center gap-2 text-xs text-slate-600"><i class="fa-solid ${d.sentiment==='positive'?'fa-arrow-trend-up text-emerald-500':'fa-arrow-trend-down text-rose-500'}"></i><span class="font-bold">${d.feature}</span><span class="text-slate-400">(${d.description}, Z=${d.score.toFixed(2)})</span></li>`).join('');
+        } else list.innerHTML = '<li class="text-sm text-slate-400 italic">Behavior aligns with average centroid.</li>';
+
+        const explanations = data.metrics.explanations || {};
+        document.getElementById('bs-why').innerText = explanations.why || "Analyzing...";
+        document.getElementById('bs-compare').innerText = explanations.compare || "";
+        document.getElementById('bs-anomaly').innerText = explanations.anomaly || "";
+
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = data.recommendations.map(p => `
+            <div class="group bg-white border border-slate-100 rounded-xl p-4 hover:shadow-xl hover:border-indigo-100 transition-all duration-300 relative overflow-hidden">
+                <div class="h-32 bg-slate-50 rounded-lg mb-4 relative overflow-hidden">
+                    <img src="https://picsum.photos/seed/${p.product_id}/300/200" class="w-full h-full object-cover opacity-90 group-hover:scale-110 transition duration-700">
+                    <div class="absolute top-2 left-2 bg-white/90 backdrop-blur px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide text-slate-600 shadow-sm">${p.category}</div>
+                </div>
+                <div class="flex justify-between items-start mb-2"><h4 class="font-bold text-slate-800 text-sm line-clamp-1" title="${p.name}">${p.name}</h4></div>
+                <div class="flex items-center gap-1 mb-4"><div class="flex text-amber-400 text-[10px]"><i class="fa-solid fa-star"></i><span class="text-slate-500 ml-1 font-bold">${p.rating}</span></div><span class="text-[10px] text-slate-300 mx-2">•</span><span class="text-[10px] text-slate-400">High Match</span></div>
+                <div class="flex justify-between items-center pt-3 border-t border-slate-50"><span class="font-mono font-bold text-slate-900">$${p.price}</span><button class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center hover:bg-indigo-600 transition shadow-lg shadow-slate-900/20 active:scale-90"><i class="fa-solid fa-plus text-xs"></i></button></div>
+            </div>
+        `).join('');
+    }
+
+    function addLog(cluster, money) {
+        const time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const row = `<tr class="hover:bg-slate-50 transition border-b border-slate-50 fade-enter"><td class="px-6 py-2 text-xs font-mono text-slate-400">${time}</td><td class="px-6 py-2 text-xs font-bold ${THEMES[cluster].text}">${CLUSTERS[cluster]}</td><td class="px-6 py-2 text-xs text-right font-bold text-slate-600">$${money}</td><td class="px-6 py-2 text-center"><i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i></td></tr>`;
+        const table = document.getElementById('log-table');
+        if(table.innerHTML.includes('No activity')) table.innerHTML='';
+        table.innerHTML = row + table.innerHTML;
+        let logs = JSON.parse(localStorage.getItem('sessionLogs') || '[]');
+        logs.unshift({cluster, money, time});
+        if(logs.length > 10) logs.pop();
+        localStorage.setItem('sessionLogs', JSON.stringify(logs));
+    }
+
+    async function loadMetrics() {
+        try {
+            const res = await fetch(`${API}/cluster/metrics`);
+            if(res.ok) metrics = await res.json();
+        } catch(e) {}
+    }
+
+    function renderCharts() {
+        if(!metrics || !metrics.elbow_curve) return;
+
+        document.getElementById('valSil').innerText = metrics.silhouette_score;
+        document.getElementById('valInertia').innerText = Math.round(metrics.inertia);
+
+        if(elbowChartInstance) elbowChartInstance.destroy();
+        const ctxElbow = document.getElementById('chart-elbow').getContext('2d');
+        elbowChartInstance = new Chart(ctxElbow, {
+            type: 'line',
+            data: {
+                labels: Object.keys(metrics.elbow_curve),
+                datasets: [{ label: 'Inertia', data: Object.values(metrics.elbow_curve), borderColor: '#4f46e5', tension: 0.3, pointBackgroundColor: '#4f46e5' }]
+            },
+            options: { maintainAspectRatio: false, plugins: {legend:{display:false}}, scales:{x:{grid:{display:false}}, y:{grid:{color:'#f1f5f9'}}} }
+        });
+
+        if(pieChartInstance) pieChartInstance.destroy();
+        const ctxPie = document.getElementById('chart-pie').getContext('2d');
+        pieChartInstance = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: { labels: CLUSTERS, datasets: [{ data: Object.values(metrics.cluster_counts), backgroundColor: ['#94a3b8', '#3b82f6', '#10b981', '#f59e0b'], borderWidth:0 }] },
+            options: { cutout: '70%', plugins: { legend: { position:'right', labels:{usePointStyle:true} } } }
+        });
+
+        if(chartInstance) chartInstance.destroy();
+        const ctxRadar = document.getElementById('chart-radar').getContext('2d');
+        chartInstance = new Chart(ctxRadar, {
+            type: 'radar',
+            data: { labels: metrics.feature_readable, datasets: metrics.centroids_scaled.map((d, i) => ({ label: CLUSTERS[i], data: d, borderColor: ['#94a3b8', '#3b82f6', '#10b981', '#f59e0b'][i], fill: false, borderWidth: 2, pointRadius: 0 })) },
+            options: { scales: { r: { suggestedMin: -1, suggestedMax: 3, ticks: {display:false}, grid: {color:'#f1f5f9'} } }, plugins: { legend: { display: false } } }
+        });
+
+        document.getElementById('table-centroids').innerHTML = metrics.centroids_real.map((c, i) => `
+            <tr class="hover:bg-slate-50 border-b border-slate-50"><td class="px-6 py-2 font-bold text-[10px] uppercase ${THEMES[i].text}">${CLUSTERS[i]}</td><td class="px-6 py-2 text-right font-mono text-[10px]">$${Math.round(c.Monetary)}</td><td class="px-6 py-2 text-right font-mono text-[10px]">${Math.round(c.Frequency)}</td><td class="px-6 py-2 text-right font-mono text-[10px]">${Math.round(c.Recency)}d</td></tr>
+        `).join('');
+    }
+
+    function toast(msg, type='info') {
+        const d = document.createElement('div');
+        const c = type==='success' ? 'bg-emerald-600' : type==='error' ? 'bg-rose-500' : 'bg-slate-800';
+        d.className = `${c} text-white px-4 py-3 rounded-lg shadow-xl text-xs font-bold flex items-center gap-3 transform transition-all translate-x-10 opacity-0`;
+        d.innerHTML = `<i class="fa-solid ${type==='success'?'fa-check':'fa-info'}"></i> ${msg}`;
+        document.getElementById('toast-container').appendChild(d);
+        setTimeout(() => d.classList.remove('translate-x-10', 'opacity-0'), 10); setTimeout(() => d.remove(), 3000);
+    }
+
+    init();
+</script>

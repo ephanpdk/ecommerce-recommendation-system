@@ -1,0 +1,81 @@
+<div id="state-idle" class="h-96 flex flex-col items-center justify-center text-center p-8 bg-white rounded-2xl border-2 border-dashed border-slate-200">
+    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6 animate-pulse">
+        <i class="fa-solid fa-robot text-4xl text-slate-300"></i>
+    </div>
+    <h3 class="text-xl font-bold text-slate-900">Model Awaiting Input</h3>
+    <p class="text-sm text-slate-500 max-w-xs mt-2 leading-relaxed">Adjust the RFM & Behavioral parameters on the left to trigger the classification engine.</p>
+</div>
+
+<div id="state-result" class="hidden space-y-8 fade-enter">
+    
+    <div id="hero-card" class="relative bg-white rounded-2xl border border-slate-200 p-8 overflow-hidden shadow-sm transition-all duration-500">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-slate-50 to-transparent rounded-bl-[100px] -mr-10 -mt-10 opacity-50"></div>
+        
+        <div class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div class="md:col-span-4 flex flex-col justify-center items-center md:items-start md:border-r border-slate-100 pr-6">
+                <div id="cluster-icon-box" class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 shadow-sm bg-slate-100 text-slate-400 transition-colors duration-300">
+                    <i id="cluster-icon" class="fa-solid fa-user"></i>
+                </div>
+                <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Identified Segment</div>
+                <h2 id="cluster-name" class="text-3xl font-bold text-slate-900 leading-none">Unknown</h2>
+            </div>
+            
+            <div class="md:col-span-8 flex flex-col justify-center">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                        <h4 class="text-[10px] font-bold text-indigo-600 uppercase mb-2 flex items-center gap-2"><i class="fa-solid fa-microchip"></i> Technical Insight</h4>
+                        <ul id="driver-list" class="space-y-1.5"></ul>
+                        <div class="mt-3 pt-2 border-t border-indigo-200/50 flex justify-between">
+                            <span class="text-[10px] text-indigo-400 font-bold">CONFIDENCE: <span id="res-conf" class="text-indigo-700">0%</span></span>
+                            <span class="text-[10px] text-indigo-400 font-bold">DIST: <span id="res-dist" class="text-indigo-700">0.00</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
+                        <h4 class="text-[10px] font-bold text-emerald-600 uppercase mb-2 flex items-center gap-2"><i class="fa-solid fa-briefcase"></i> Business Summary</h4>
+                        <ul id="business-summary-list" class="space-y-1.5">
+                            <li id="bs-why" class="text-xs text-emerald-900 font-bold">...</li>
+                            <li id="bs-compare" class="text-xs text-emerald-800 italic">...</li>
+                            <li id="bs-anomaly" class="text-[10px] text-red-500 mt-1">...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h3 class="font-bold text-slate-900 text-lg">Curated Recommendations</h3>
+                <p class="text-xs text-slate-500 font-medium">Filtered by cluster affinity & price sensitivity</p>
+            </div>
+            <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border border-indigo-100">AI MATCHED</div>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+    <div class="px-6 py-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center">
+        <h4 class="text-xs font-bold text-slate-600 uppercase flex items-center gap-2">
+            <i class="fa-solid fa-clock-rotate-left"></i> Session History
+        </h4>
+        <span class="text-[10px] font-mono text-slate-400 bg-white px-2 py-1 rounded border border-slate-200">LOCAL_STORAGE</span>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left text-slate-600">
+            <thead class="text-[10px] text-slate-400 uppercase bg-white border-b border-slate-100">
+                <tr>
+                    <th class="px-6 py-3 font-bold">Time</th>
+                    <th class="px-6 py-3 font-bold">Segment</th>
+                    <th class="px-6 py-3 font-bold text-right">Input ($)</th>
+                    <th class="px-6 py-3 font-bold text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody id="log-table" class="text-slate-600 divide-y divide-slate-50">
+                <tr><td colspan="4" class="px-6 py-8 text-center italic text-slate-400">No activity recorded yet.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

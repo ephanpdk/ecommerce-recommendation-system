@@ -1,0 +1,55 @@
+<div class="mb-12 text-center">
+    <h2 class="text-3xl font-bold text-slate-900">Machine Learning Pipeline</h2>
+    <p class="text-slate-500 mt-2">End-to-End Data Processing Architecture</p>
+</div>
+
+<div class="relative max-w-6xl mx-auto">
+    <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 hidden md:block -z-10 rounded-full"></div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="group relative bg-white p-6 rounded-xl border border-slate-200 hover:border-indigo-500 transition-all duration-300 shadow-sm hover:shadow-lg">
+            <div class="w-14 h-14 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-indigo-600 text-xl font-bold mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors relative z-10 border-4 border-white shadow-sm">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-center mb-2">Ingestion</h4>
+            <p class="text-xs text-slate-500 text-center leading-relaxed">Raw transactional data loading from SQL/CSV sources.</p>
+            <i class="fa-solid fa-arrow-right absolute top-1/2 -right-4 text-slate-300 hidden md:block transform -translate-y-1/2 text-lg"></i>
+        </div>
+
+        <div class="group relative bg-white p-6 rounded-xl border border-slate-200 hover:border-emerald-500 transition-all duration-300 hover:shadow-lg">
+            <div class="w-14 h-14 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-emerald-600 text-xl font-bold mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors relative z-10 border-4 border-white shadow-sm">
+                <i class="fa-solid fa-sliders"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-center mb-2">Preprocessing</h4>
+            <p class="text-xs text-slate-500 text-center leading-relaxed">Log Transform & Z-Score Scaling.</p>
+            <i class="fa-solid fa-arrow-right absolute top-1/2 -right-4 text-slate-300 hidden md:block transform -translate-y-1/2 text-lg"></i>
+        </div>
+
+        <div class="group relative bg-white p-6 rounded-xl border border-slate-200 hover:border-blue-500 transition-all duration-300 hover:shadow-lg">
+            <div class="w-14 h-14 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-blue-600 text-xl font-bold mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors relative z-10 border-4 border-white shadow-sm">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-center mb-2">Clustering</h4>
+            <p class="text-xs text-slate-500 text-center leading-relaxed">K-Means++ Algorithm with Euclidean distance metric.</p>
+            <i class="fa-solid fa-arrow-right absolute top-1/2 -right-4 text-slate-300 hidden md:block transform -translate-y-1/2 text-lg"></i>
+        </div>
+
+        <div class="group relative bg-white p-6 rounded-xl border border-slate-200 hover:border-amber-500 transition-all duration-300 hover:shadow-lg">
+            <div class="w-14 h-14 mx-auto bg-slate-50 rounded-full flex items-center justify-center text-amber-600 text-xl font-bold mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors relative z-10 border-4 border-white shadow-sm">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-center mb-2">Inference</h4>
+            <p class="text-xs text-slate-500 text-center leading-relaxed">Centroid Matching & Recommendation.</p>
+        </div>
+    </div>
+    
+    <div class="mt-12 p-6 bg-slate-50 border border-slate-200 rounded-xl text-center">
+         <h4 class="text-xs font-bold text-slate-500 uppercase mb-4">Technical Stack</h4>
+         <div class="flex gap-4 justify-center flex-wrap">
+            <span class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-mono text-slate-600">FastAPI</span>
+            <span class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-mono text-slate-600">Scikit-Learn</span>
+            <span class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-mono text-slate-600">PostgreSQL</span>
+            <span class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-mono text-slate-600">Docker</span>
+         </div>
+    </div>
+</div>

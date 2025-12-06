@@ -19,10 +19,9 @@ router = APIRouter(prefix="/recommend", tags=["Recommendation"])
 BASE_DIR = "/code/app/ml"
 METRICS_FILE = f"{BASE_DIR}/model_metrics.json"
 
-# Global Cache
 models = {"scaler": None, "kmeans": None, "topN": {}, "meta": {}}
 
-def load_models():
+def load_ml_components():
     try:
         models["scaler"] = joblib.load(f"{BASE_DIR}/scaler_preproc.joblib")
         models["kmeans"] = joblib.load(f"{BASE_DIR}/kmeans_k2.joblib")
@@ -30,11 +29,10 @@ def load_models():
         if os.path.exists(METRICS_FILE):
             with open(METRICS_FILE, "r") as f:
                 models["meta"] = json.load(f)
-        print("✅ Models loaded successfully")
     except Exception as e:
-        print(f"⚠️ Model loading warning: {e}")
+        print(f"Warning: {e}")
 
-load_models()
+load_ml_components()
 
 @router.post("/user")
 def recommend_user(
@@ -42,11 +40,10 @@ def recommend_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    # Reload safety check
     if not models["scaler"] or not models["kmeans"]:
-        load_models()
+        load_ml_components()
         if not models["scaler"]:
-            raise HTTPException(status_code=500, detail="Model AI belum siap.")
+            raise HTTPException(status_code=500, detail="AI Model not ready")
 
     input_data = data.dict()
     df = pd.DataFrame([input_data])
@@ -56,61 +53,62 @@ def recommend_user(
         "Recency", "Frequency", "Monetary_Log", "Avg_Items",
         "Unique_Products", "Wishlist_Count", "Add_to_Cart_Count", "Page_Views"
     ]
+    readable_cols = models["meta"].get("feature_readable", use_cols)
+    cluster_names = ["Newbie", "Window Shopper", "Loyalist", "Sultan"]
 
     try:
-        # 1. AI Processing
         X_scaled = models["scaler"].transform(df[use_cols])
         cluster = int(models["kmeans"].predict(X_scaled)[0])
         
-        # 2. Distance & Confidence
-        centroids = models["kmeans"].cluster_centers_
-        # Pakai Euclidean Distance manual yg lebih stabil daripada transform
+        dist_matrix = models["kmeans"].transform(X_scaled)[0]
+        
         distances = []
-        for i, center in enumerate(centroids):
-            dist = np.linalg.norm(X_scaled[0] - center)
+        for i, dist in enumerate(dist_matrix):
             distances.append({"cluster": i, "distance": round(float(dist), 4)})
         
         distances.sort(key=lambda x: x['distance'])
         nearest = distances[0]
         second = distances[1] if len(distances) > 1 else None
         
-        # Confidence calc
-        margin = (second['distance'] - nearest['distance']) if second else 0
+        margin = second['distance'] - nearest['distance'] if second else 0
         confidence = min(100, max(50, (margin * 50) + 50))
 
-        # 3. Explainability
-        readable_cols = models["meta"].get("feature_readable", use_cols)
         z_scores = X_scaled[0]
         drivers = []
+        anomalies = []
         
         for i, val in enumerate(z_scores):
             score = float(val)
-            if abs(score) < 0.8: continue # Filter noise
+            impact = abs(score)
+            
+            if impact > 2.0:
+                anomalies.append(f"{readable_cols[i]} is unusually {'high' if score > 0 else 'low'}")
+            
+            if impact < 0.5: continue
             
             drivers.append({
-                "feature": readable_cols[i] if i < len(readable_cols) else use_cols[i],
+                "feature": readable_cols[i],
                 "score": round(score, 2),
                 "description": "High" if score > 0 else "Low",
                 "sentiment": "positive" if score > 0 else "negative",
-                "impact": abs(score)
+                "impact": impact
             })
         
         drivers.sort(key=lambda x: x['impact'], reverse=True)
+        
+        explanations = {
+            "why": f"Classified as {cluster_names[cluster]} primarily due to {drivers[0]['feature'] if drivers else 'balanced traits'}.",
+            "compare": f"Nearest alternative is {cluster_names[second['cluster']]} (Dist: {second['distance']})" if second else "No close alternative.",
+            "anomaly": anomalies[0] if anomalies else "Behavior is within normal distribution."
+        }
 
-        # 4. Products
         raw_recs = models["topN"].get(cluster, [])
-        # Handle format list of dicts vs list of ints
-        product_ids = []
-        if raw_recs:
-            if isinstance(raw_recs[0], dict):
-                product_ids = [item['product_id'] for item in raw_recs]
-            else:
-                product_ids = [int(x) for x in raw_recs]
-
+        product_ids = [item['product_id'] for item in raw_recs] if raw_recs and isinstance(raw_recs[0], dict) else []
+        
         final_recs = []
         if product_ids:
             db_products = db.query(Product).filter(Product.product_id.in_(product_ids)).all()
-            price_base = {0: 15, 1: 50, 2: 150, 3: 800}.get(cluster, 50)
+            base_mult = {0: 10, 1: 50, 2: 150, 3: 500}
             
             for prod in db_products:
                 random.seed(prod.product_id)
@@ -118,16 +116,15 @@ def recommend_user(
                     "product_id": prod.product_id,
                     "name": prod.name,
                     "category": prod.category,
-                    "price": round(price_base * random.uniform(0.8, 1.2), 2),
-                    "rating": round(random.uniform(4.0, 5.0), 1)
+                    "price": round(base_mult.get(cluster, 50) * random.uniform(0.8, 1.2), 2),
+                    "rating": round(random.uniform(3.5, 5.0), 1)
                 })
 
         if not final_recs:
-             final_recs = [{"product_id": 0, "name": "No Recommendations", "category": "General", "price": 0, "rating": 0}]
+             final_recs = [{"product_id": 0, "name": "Item", "category": "General", "price": 0, "rating": 0}]
 
         recs_clean = jsonable_encoder(final_recs)
 
-        # 5. Logging
         try:
             log = PredictionLog(user_id=current_user.user_id, predicted_cluster=cluster, recommended_items=recs_clean)
             db.add(log)
@@ -135,18 +132,17 @@ def recommend_user(
         except:
             db.rollback()
 
-        # RETURN RESPONSE (PASTIKAN STRUKTUR INI SAMA DENGAN UI)
         return {
             "cluster": cluster,
             "metrics": {
                 "confidence_score": round(confidence, 1),
                 "distance_to_centroid": nearest['distance'],
                 "feature_drivers": drivers[:3],
+                "explanations": explanations,
                 "all_distances": distances
             },
             "recommendations": recs_clean
         }
 
     except Exception as e:
-        print(f"🔥 ERROR DI BACKEND: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Internal Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))

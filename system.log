@@ -1,0 +1,2 @@
+2025-12-06 11:04:51,046 - INFO - {"timestamp": "2025-12-06T11:04:51.046819", "user_id": 1, "input_summary": {"M": 5360.0, "F": 5}, "prediction": 2, "confidence": 62.654999999999994}
+2025-12-06 11:06:38,462 - INFO - {"timestamp": "2025-12-06T11:06:38.462082", "user_id": 1, "input_summary": {"M": 5360.0, "F": 5}, "prediction": 2, "confidence": 62.654999999999994}

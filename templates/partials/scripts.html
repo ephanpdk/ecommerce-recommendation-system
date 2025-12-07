@@ -214,62 +214,29 @@
 }
 
     function generateInsights(payload, clusterIdx) {
-    if(!metrics || !metrics.centroids_real) return {
-        why: "Data metrics not loaded yet.",
-        compare: "Cannot compare without baseline.",
-        anomaly: "Unknown."
-    };
+        if(!metrics || !metrics.centroids_real) return { why: "Data metrics not loaded.", compare: "Analysis unavailable.", anomaly: "Unknown." };
+        const centroid = metrics.centroids_real[clusterIdx];
+        const globalAvgMoney = metrics.centroids_real.reduce((a,b)=>a+b.Monetary,0)/4;
 
-    const centroid = metrics.centroids_real[clusterIdx];
-    
-    // 1. ADVANCED LOGIC: Feature Combination (Why)
-    let why = "User behavior aligns with standard segment profile.";
-    
-    // High Interest (Views) but Low Commitment (Freq/Money)
-    if (payload.Page_Views > centroid.Page_Views * 1.2 && payload.Frequency < centroid.Frequency) {
-        why = "High engagement intent detected, but conversion rate lags behind segment average.";
+        // INSIGHT BUILDER (Comparison Logic)
+        let why = `User mapped to ${CLUSTERS[clusterIdx]} based on feature vector proximity.`;
+        if (payload.Monetary > centroid.Monetary * 1.1) why = `User Spend ($${payload.Monetary}) is significantly higher than the cluster average ($${Math.round(centroid.Monetary)}).`;
+        else if (payload.Page_Views > centroid.Page_Views * 1.3) why = `High engagement (Views: ${payload.Page_Views}) drives this classification despite lower spend.`;
+        
+        let pressure = "Stable";
+        if (payload.Recency > 60) pressure = "High Risk (Churn)";
+        else if (payload.Recency < 10 && payload.Frequency > 10) pressure = "High Opportunity";
+
+        const diffMoney = ((payload.Monetary - centroid.Monetary) / centroid.Monetary) * 100;
+        let compare = `Spending is ${Math.abs(diffMoney).toFixed(1)}% ${diffMoney >= 0 ? 'above' : 'below'} segment average.`;
+
+        let action = "Maintain standard communication.";
+        if (pressure.includes("Churn") && payload.Monetary > 1500) action = "🚨 URGENT: Deploy Win-back Campaign via Direct Call.";
+        else if (payload.Page_Views > 60 && payload.Frequency < 2) action = "💡 OPPORTUNITY: Send First-Purchase Discount Coupon.";
+        else if (clusterIdx === 3) action = "⭐ VIP: Offer Early Access to New Collections.";
+
+        return { why, compare, anomaly: action };
     }
-    // Efficient Buyer (Low Views, High Money)
-    else if (payload.Page_Views < centroid.Page_Views * 0.8 && payload.Monetary > centroid.Monetary) {
-        why = "Decisive buyer pattern: High transaction value with minimal browsing time.";
-    }
-    // Hoarding Behavior (High Cart, Low Freq)
-    else if (payload.Add_to_Cart_Count > centroid.Add_to_Cart_Count * 1.5 && payload.Frequency <= centroid.Frequency) {
-        why = "Cart abandonment risk: User adds significantly more items than they purchase.";
-    }
-    // Churning High Value (High Money, High Recency)
-    else if (payload.Monetary > centroid.Monetary && payload.Recency > 60) {
-        why = "Dormant VIP: High historical value but inactive for an extended period.";
-    }
-
-    // 2. PRESSURE LEVEL & COMPARISON
-    const diffMoney = ((payload.Monetary - centroid.Monetary) / centroid.Monetary) * 100;
-    let pressure = "Stable";
-    
-    if (payload.Recency > 90) pressure = "High Risk (Churn)";
-    else if (payload.Recency > 45 && payload.Monetary > 2000) pressure = "Medium Risk";
-    else if (payload.Recency < 7 && payload.Frequency > 10) pressure = "High Opportunity";
-
-    let compare = `Spending ${Math.abs(diffMoney).toFixed(1)}% ${diffMoney >= 0 ? 'above' : 'below'} avg. Status: ${pressure}.`;
-
-    // 3. DECISION SUPPORT: Business Action (Anomaly Slot)
-    let action = "Maintain standard communication.";
-
-    // Logic Matrix for Actions
-    if (pressure.includes("Churn") && payload.Monetary > 1500) {
-        action = "🚨 URGENT: Deploy Win-back Campaign via Direct Call/SMS.";
-    } else if (payload.Page_Views > 60 && payload.Frequency === 0) {
-        action = "💡 OPPORTUNITY: Send First-Purchase Discount Coupon.";
-    } else if (payload.Add_to_Cart_Count > 10 && payload.Recency < 3) {
-        action = "🔥 HOT LEAD: Trigger 'Items in Cart' Reminder immediately.";
-    } else if (clusterIdx === 3 && payload.Recency < 14) {
-        action = "⭐ VIP: Offer Early Access to New Collections.";
-    } else if (payload.Wishlist_Count > 5) {
-        action = "🔔 NUDGE: Notify regarding stock availability for wishlist.";
-    }
-
-    return { why, compare, anomaly: action };
-}
 
     function resetSim() {
         document.getElementById('in-money').value=1000; document.getElementById('disp-money').innerText='$1000';

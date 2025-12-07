@@ -159,7 +159,7 @@ docker-compose restart backend
 
 1.  Buka Dashboard.
 2.  Masuk ke menu **Simulator**.
-3.  Set **Total Spend** ke `$4000` dan **Frequency** ke `40`.
+3.  Set **Total Spend** ke `$4000` dan **Frequency** ke `40` dan **Monthly Page View** ke `55`.
 4.  Klik **Predict Persona**.
 5.  **Hasil:** User terdeteksi sebagai **Sultan**. Rekomendasi produk akan menampilkan barang mahal (Luxury).
 6.  Geser **Recency** menjadi `90 days` (jarang aktif).

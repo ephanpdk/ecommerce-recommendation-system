@@ -11,210 +11,210 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <div id="view-dashboard" class="max-w-5xl mx-auto py-8 px-4 sm:px-6">
-    
-    <div class="mb-10">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="text-xl font-bold text-slate-900">Customer Simulator</h2>
-                <p class="text-sm text-slate-500">Adjust parameters to simulate user behavior.</p>
+            <div id="view-dashboard" class="max-w-5xl mx-auto py-8 px-4 sm:px-6">
+        
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Customer Simulator</h2>
+                    <p class="text-sm text-slate-500">Adjust parameters to simulate user behavior.</p>
+                </div>
+                <button onclick="resetSim()" class="text-xs font-bold text-slate-400 hover:text-indigo-600 transition flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-right"></i> RESET
+                </button>
             </div>
-            <button onclick="resetSim()" class="text-xs font-bold text-slate-400 hover:text-indigo-600 transition flex items-center gap-1">
-                <i class="fa-solid fa-rotate-right"></i> RESET
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                        <div class="bg-indigo-50 text-indigo-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-wallet text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Transactional (RFM)</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">Hard Metrics</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Total Spend</label>
+                                <span id="disp-money" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">$1000</span>
+                            </div>
+                            <input type="range" id="in-money" min="10" max="5000" step="10" value="1000" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Frequency (Orders)</label>
+                                <span id="disp-freq" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">5</span>
+                            </div>
+                            <input type="range" id="in-freq" min="1" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Recency (Days ago)</label>
+                                <span id="disp-rec" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">30 days</span>
+                            </div>
+                            <input type="range" id="in-rec" min="1" max="365" step="1" value="30" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                        <input type="hidden" id="in-avg" value="2.5">
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+                        <div class="bg-pink-50 text-pink-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-heart-pulse text-sm"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Engagement Level</h3>
+                            <p class="text-[10px] text-slate-400 font-medium">Soft Metrics</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Monthly Page Views</label>
+                                <span id="disp-views" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">50</span>
+                            </div>
+                            <input type="range" id="in-views" min="0" max="500" step="5" value="50" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Add to Cart</label>
+                                <span id="disp-cart" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">15</span>
+                            </div>
+                            <input type="range" id="in-cart" min="0" max="100" step="1" value="15" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                        <div class="group">
+                            <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
+                                <label>Wishlist Items</label>
+                                <span id="disp-wish" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">5</span>
+                            </div>
+                            <input type="range" id="in-wish" min="0" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="runPrediction()" class="w-full group relative overflow-hidden bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-xl shadow-slate-900/10 transition-all duration-300 active:scale-[0.99]">
+                <div class="relative z-10 flex items-center justify-center gap-3">
+                    <span class="text-xs uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all">Run Prediction Model</span>
+                    <i class="fa-solid fa-arrow-right text-indigo-400 group-hover:text-white transition-colors"></i>
+                </div>
+                <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="border-t border-slate-200 pt-10">
             
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                    <div class="bg-indigo-50 text-indigo-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
-                        <i class="fa-solid fa-wallet text-sm"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Transactional (RFM)</h3>
-                        <p class="text-[10px] text-slate-400 font-medium">Hard Metrics</p>
-                    </div>
+            <div id="state-idle" class="h-64 flex flex-col items-center justify-center text-center p-8 bg-slate-50/50 rounded-2xl border-2 border-dashed border-slate-200">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm animate-pulse border border-slate-100">
+                    <i class="fa-solid fa-wand-magic-sparkles text-2xl text-slate-300"></i>
                 </div>
-
-                <div class="space-y-6">
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Total Spend</label>
-                            <span id="disp-money" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">$1000</span>
-                        </div>
-                        <input type="range" id="in-money" min="10" max="5000" step="10" value="1000" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Frequency (Orders)</label>
-                            <span id="disp-freq" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">5</span>
-                        </div>
-                        <input type="range" id="in-freq" min="1" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Recency (Days ago)</label>
-                            <span id="disp-rec" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">30 days</span>
-                        </div>
-                        <input type="range" id="in-rec" min="1" max="365" step="1" value="30" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                    <input type="hidden" id="in-avg" value="2.5">
-                </div>
+                <h3 class="text-lg font-bold text-slate-900">Ready to Analyze</h3>
+                <p class="text-sm text-slate-500 max-w-xs mt-1">Adjust parameters above and hit predict to see customer persona.</p>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
-                    <div class="bg-pink-50 text-pink-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
-                        <i class="fa-solid fa-heart-pulse text-sm"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Engagement Level</h3>
-                        <p class="text-[10px] text-slate-400 font-medium">Soft Metrics</p>
-                    </div>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Monthly Page Views</label>
-                            <span id="disp-views" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">50</span>
-                        </div>
-                        <input type="range" id="in-views" min="0" max="500" step="5" value="50" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Add to Cart</label>
-                            <span id="disp-cart" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">15</span>
-                        </div>
-                        <input type="range" id="in-cart" min="0" max="100" step="1" value="15" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                    <div class="group">
-                        <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                            <label>Wishlist Items</label>
-                            <span id="disp-wish" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">5</span>
-                        </div>
-                        <input type="range" id="in-wish" min="0" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer group-hover:bg-slate-200 transition">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <button onclick="runPrediction()" class="w-full group relative overflow-hidden bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-xl shadow-slate-900/10 transition-all duration-300 active:scale-[0.99]">
-            <div class="relative z-10 flex items-center justify-center gap-3">
-                <span class="text-xs uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all">Run Prediction Model</span>
-                <i class="fa-solid fa-arrow-right text-indigo-400 group-hover:text-white transition-colors"></i>
-            </div>
-            <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        </button>
-    </div>
-
-    <div class="border-t border-slate-200 pt-10">
-        
-        <div id="state-idle" class="h-64 flex flex-col items-center justify-center text-center p-8 bg-slate-50/50 rounded-2xl border-2 border-dashed border-slate-200">
-            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm animate-pulse border border-slate-100">
-                <i class="fa-solid fa-wand-magic-sparkles text-2xl text-slate-300"></i>
-            </div>
-            <h3 class="text-lg font-bold text-slate-900">Ready to Analyze</h3>
-            <p class="text-sm text-slate-500 max-w-xs mt-1">Adjust parameters above and hit predict to see customer persona.</p>
-        </div>
-
-        <div id="state-result" class="hidden space-y-8 fade-enter">
-            
-            <div id="hero-card" class="relative bg-white rounded-2xl border border-slate-200 p-0 overflow-hidden shadow-lg shadow-slate-200/50 transition-all duration-500">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-slate-50 to-transparent rounded-full -mr-20 -mt-20 opacity-70 pointer-events-none"></div>
+            <div id="state-result" class="hidden space-y-8 fade-enter">
                 
-                <div class="p-8 grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
-                    <div class="md:col-span-4 flex flex-col justify-center items-center md:items-start md:border-r border-slate-100 pr-0 md:pr-8">
-                        <div id="cluster-icon-box" class="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-5 shadow-inner bg-slate-100 text-slate-400 transition-colors duration-500">
-                            <i id="cluster-icon" class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Assigned Persona</div>
-                        <h2 id="cluster-name" class="text-4xl font-extrabold text-slate-900 leading-none tracking-tight">Unknown</h2>
-                        
-                        <div class="mt-6 flex gap-4 w-full">
-                             <div class="flex-1 bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
-                                <div class="text-[10px] text-slate-400 font-bold uppercase">Confidence</div>
-                                <div id="res-conf" class="text-sm font-bold text-slate-700">0%</div>
-                             </div>
-                             <div class="flex-1 bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
-                                <div class="text-[10px] text-slate-400 font-bold uppercase">Distance</div>
-                                <div id="res-dist" class="text-sm font-bold text-slate-700">0.00</div>
-                             </div>
-                        </div>
-                    </div>
+                <div id="hero-card" class="relative bg-white rounded-2xl border border-slate-200 p-0 overflow-hidden shadow-lg shadow-slate-200/50 transition-all duration-500">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-slate-50 to-transparent rounded-full -mr-20 -mt-20 opacity-70 pointer-events-none"></div>
                     
-                    <div class="md:col-span-8 flex flex-col justify-center">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-                            
-                            <div class="bg-indigo-50/40 p-5 rounded-xl border border-indigo-100/60 flex flex-col">
-                                <h4 class="text-[10px] font-bold text-indigo-600 uppercase mb-3 flex items-center gap-2">
-                                    <i class="fa-solid fa-microchip"></i> Algorithm Drivers
-                                </h4>
-                                <ul id="driver-list" class="space-y-2 flex-1"></ul>
+                    <div class="p-8 grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
+                        <div class="md:col-span-4 flex flex-col justify-center items-center md:items-start md:border-r border-slate-100 pr-0 md:pr-8">
+                            <div id="cluster-icon-box" class="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-5 shadow-inner bg-slate-100 text-slate-400 transition-colors duration-500">
+                                <i id="cluster-icon" class="fa-solid fa-user"></i>
                             </div>
+                            <div class="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Assigned Persona</div>
+                            <h2 id="cluster-name" class="text-4xl font-extrabold text-slate-900 leading-none tracking-tight">Unknown</h2>
                             
-                            <div class="bg-emerald-50/40 p-5 rounded-xl border border-emerald-100/60 flex flex-col">
-                                <h4 class="text-[10px] font-bold text-emerald-600 uppercase mb-3 flex items-center gap-2">
-                                    <i class="fa-solid fa-briefcase"></i> AI Explanation
-                                </h4>
-                                <ul class="space-y-3 flex-1">
-                                    <li class="flex gap-2">
-                                        <i class="fa-solid fa-quote-left text-emerald-300 text-xs mt-1"></i>
-                                        <span id="bs-why" class="text-xs text-emerald-900 font-bold leading-snug">Analyzing behavior...</span>
-                                    </li>
-                                    <li class="flex gap-2">
-                                        <i class="fa-solid fa-scale-balanced text-emerald-300 text-xs mt-1"></i>
-                                        <span id="bs-compare" class="text-[11px] text-emerald-700 italic leading-snug">...</span>
-                                    </li>
-                                    <li id="bs-anomaly" class="text-[10px] font-bold text-emerald-600 bg-white/60 p-2 rounded border border-emerald-100 mt-auto">
-                                        Checking for anomalies...
-                                    </li>
-                                </ul>
+                            <div class="mt-6 flex gap-4 w-full">
+                                <div class="flex-1 bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase">Confidence</div>
+                                    <div id="res-conf" class="text-sm font-bold text-slate-700">0%</div>
+                                </div>
+                                <div class="flex-1 bg-slate-50 rounded-lg p-2 text-center border border-slate-100">
+                                    <div class="text-[10px] text-slate-400 font-bold uppercase">Distance</div>
+                                    <div id="res-dist" class="text-sm font-bold text-slate-700">0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="md:col-span-8 flex flex-col justify-center">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+                                
+                                <div class="bg-indigo-50/40 p-5 rounded-xl border border-indigo-100/60 flex flex-col">
+                                    <h4 class="text-[10px] font-bold text-indigo-600 uppercase mb-3 flex items-center gap-2">
+                                        <i class="fa-solid fa-microchip"></i> Algorithm Drivers
+                                    </h4>
+                                    <ul id="driver-list" class="space-y-2 flex-1"></ul>
+                                </div>
+                                
+                                <div class="bg-emerald-50/40 p-5 rounded-xl border border-emerald-100/60 flex flex-col">
+                                    <h4 class="text-[10px] font-bold text-emerald-600 uppercase mb-3 flex items-center gap-2">
+                                        <i class="fa-solid fa-briefcase"></i> AI Explanation
+                                    </h4>
+                                    <ul class="space-y-3 flex-1">
+                                        <li class="flex gap-2">
+                                            <i class="fa-solid fa-quote-left text-emerald-300 text-xs mt-1"></i>
+                                            <span id="bs-why" class="text-xs text-emerald-900 font-bold leading-snug">Analyzing behavior...</span>
+                                        </li>
+                                        <li class="flex gap-2">
+                                            <i class="fa-solid fa-scale-balanced text-emerald-300 text-xs mt-1"></i>
+                                            <span id="bs-compare" class="text-[11px] text-emerald-700 italic leading-snug">...</span>
+                                        </li>
+                                        <li id="bs-anomaly" class="text-[10px] font-bold text-emerald-600 bg-white/60 p-2 rounded border border-emerald-100 mt-auto">
+                                            Checking for anomalies...
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <div class="flex items-center justify-between mb-6 px-1">
-                    <div>
-                        <h3 class="font-bold text-slate-900 text-lg">Recommended Products</h3>
-                        <p class="text-xs text-slate-500">Filtered by persona affinity & price range.</p>
+                <div>
+                    <div class="flex items-center justify-between mb-6 px-1">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-lg">Recommended Products</h3>
+                            <p class="text-xs text-slate-500">Filtered by persona affinity & price range.</p>
+                        </div>
+                        <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border border-indigo-100 flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span> AI MATCHED
+                        </div>
                     </div>
-                    <div class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border border-indigo-100 flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span> AI MATCHED
+                    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div class="px-6 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <h4 class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Recent Activity
+                        </h4>
+                    </div>
+                    <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                        <table class="w-full text-xs text-left text-slate-600">
+                            <thead class="text-[10px] text-slate-400 uppercase bg-white border-b border-slate-100 sticky top-0">
+                                <tr>
+                                    <th class="px-6 py-2 font-bold bg-slate-50">Time</th>
+                                    <th class="px-6 py-2 font-bold bg-slate-50">Segment</th>
+                                    <th class="px-6 py-2 font-bold bg-slate-50 text-right">Spend</th>
+                                    <th class="px-6 py-2 font-bold bg-slate-50 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-table" class="divide-y divide-slate-50 bg-white">
+                                <tr class="text-center text-slate-400 italic py-4"><td colspan="4" class="py-4">No activity in this session yet.</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
 
-            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                 <div class="px-6 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-                    <h4 class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Recent Activity
-                    </h4>
-                </div>
-                <div class="overflow-x-auto max-h-48 overflow-y-auto">
-                    <table class="w-full text-xs text-left text-slate-600">
-                        <thead class="text-[10px] text-slate-400 uppercase bg-white border-b border-slate-100 sticky top-0">
-                            <tr>
-                                <th class="px-6 py-2 font-bold bg-slate-50">Time</th>
-                                <th class="px-6 py-2 font-bold bg-slate-50">Segment</th>
-                                <th class="px-6 py-2 font-bold bg-slate-50 text-right">Spend</th>
-                                <th class="px-6 py-2 font-bold bg-slate-50 text-center">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="log-table" class="divide-y divide-slate-50 bg-white">
-                            <tr class="text-center text-slate-400 italic py-4"><td colspan="4" class="py-4">No activity in this session yet.</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div> </div>
-</div>
+            </div> </div>
+    </div>
 
         <div id="view-insights" class="hidden fade-enter">
             {% include "partials/analytics.html" %}

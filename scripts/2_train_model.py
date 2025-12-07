@@ -12,8 +12,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 BASE_DIR = "app/ml"
 os.makedirs(BASE_DIR, exist_ok=True)
 
+# 1. LOAD DATA
 df = pd.read_csv(f"{BASE_DIR}/dummy_ecommerce_clustered.csv")
 df_prods = pd.read_csv(f"{BASE_DIR}/products_dummy.csv")
+
+# --- PERBAIKAN PENTING DI SINI ---
+# Ubah 'product_name' jadi 'name' agar terbaca oleh Frontend HTML
+df_prods = df_prods.rename(columns={"product_name": "name"})
+# ---------------------------------
 
 df["Monetary_Log"] = np.log1p(df["Monetary"])
 
@@ -52,6 +58,7 @@ kmeans_final = KMeans(n_clusters=4, init=sorted_centers, n_init=1, random_state=
 kmeans_final.fit(X_scaled)
 df["Cluster"] = df["Temp"].map(mapping)
 
+# COSINE SIMILARITY REKOMENDASI
 prod_scaler = MinMaxScaler()
 prod_features = df_prods[['price', 'complexity_score']].values
 prod_vectors = prod_scaler.fit_transform(prod_features)
@@ -103,4 +110,4 @@ joblib.dump(scaler, f"{BASE_DIR}/scaler_preproc.joblib")
 joblib.dump(kmeans_final, f"{BASE_DIR}/kmeans_k2.joblib")
 joblib.dump(recommendations, f"{BASE_DIR}/topN_by_cluster.joblib")
 
-print("Training Complete")
+print("Training Complete & Fixed Columns")

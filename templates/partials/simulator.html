@@ -1,83 +1,101 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
     
-    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-        <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-            <div class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center">
-                <i class="fa-solid fa-wallet text-xs"></i>
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all hover:shadow-md relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500 transition-all duration-500" id="indicator-rfm"></div>
+        
+        <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-50 text-indigo-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-wallet text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Transactional</h3>
+                    <p class="text-[10px] text-slate-400 font-medium">Spending Power</p>
+                </div>
             </div>
-            <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider">Transactional (RFM)</h3>
+            <div id="live-rfm-tag" class="px-3 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 transition-colors">
+                LOW SPENDER
+            </div>
         </div>
 
-        <div class="space-y-5">
-            <div>
+        <div class="space-y-6">
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Total Spend (Monetary)</label>
-                    <span id="disp-money" class="text-indigo-600">$1000</span>
+                    <label>Total Spend ($)</label>
+                    <span id="disp-money" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">$1000</span>
                 </div>
-                <input type="range" id="in-money" min="10" max="5000" step="10" value="1000" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="in-money" oninput="updateLiveSimulator()" min="10" max="5000" step="10" value="1000" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
 
-            <div>
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Purchase Count (Frequency)</label>
-                    <span id="disp-freq" class="text-indigo-600">5</span>
+                    <label>Frequency (Orders)</label>
+                    <span id="disp-freq" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">5</span>
                 </div>
-                <input type="range" id="in-freq" min="1" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="in-freq" oninput="updateLiveSimulator()" min="1" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
 
-            <div>
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Days Since Last Buy (Recency)</label>
-                    <span id="disp-rec" class="text-indigo-600">30 days</span>
+                    <label>Recency (Days ago)</label>
+                    <span id="disp-rec" class="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">30 days</span>
                 </div>
-                <input type="range" id="in-rec" min="1" max="365" step="1" value="30" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
-                <p class="text-[10px] text-slate-400 mt-1">*Lower is better (More active)</p>
+                <input type="range" id="in-rec" oninput="updateLiveSimulator()" min="1" max="365" step="1" value="30" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
-            
-             <input type="hidden" id="in-avg" value="2.5">
+            <input type="hidden" id="in-avg" value="2.5">
         </div>
     </div>
 
-    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-        <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-            <div class="bg-pink-100 text-pink-600 w-8 h-8 rounded-lg flex items-center justify-center">
-                <i class="fa-solid fa-heart-pulse text-xs"></i>
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all hover:shadow-md relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-pink-500 transition-all duration-500" id="indicator-eng"></div>
+
+        <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-pink-50 text-pink-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-heart-pulse text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wide">Engagement</h3>
+                    <p class="text-[10px] text-slate-400 font-medium">Interest Level</p>
+                </div>
             </div>
-            <h3 class="font-bold text-slate-700 text-sm uppercase tracking-wider">Engagement & Interest</h3>
+            <div id="live-eng-tag" class="px-3 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 transition-colors">
+                PASSIVE
+            </div>
         </div>
 
-        <div class="space-y-5">
-            <div>
+        <div class="space-y-6">
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Monthly Page Views</label>
-                    <span id="disp-views" class="text-pink-600">50</span>
+                    <label>Monthly Views</label>
+                    <span id="disp-views" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">50</span>
                 </div>
-                <input type="range" id="in-views" min="0" max="500" step="5" value="50" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="in-views" oninput="updateLiveSimulator()" min="0" max="500" step="5" value="50" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
 
-            <div>
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Add to Cart Events</label>
-                    <span id="disp-cart" class="text-pink-600">15</span>
+                    <label>Add to Cart</label>
+                    <span id="disp-cart" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">15</span>
                 </div>
-                <input type="range" id="in-cart" min="0" max="100" step="1" value="15" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="in-cart" oninput="updateLiveSimulator()" min="0" max="100" step="1" value="15" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
 
-            <div>
+            <div class="group/item">
                 <div class="flex justify-between text-xs font-bold text-slate-600 mb-2">
-                    <label>Wishlist Items</label>
-                    <span id="disp-wish" class="text-pink-600">5</span>
+                    <label>Wishlist</label>
+                    <span id="disp-wish" class="text-pink-600 bg-pink-50 px-2 py-0.5 rounded border border-pink-100">5</span>
                 </div>
-                <input type="range" id="in-wish" min="0" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="in-wish" oninput="updateLiveSimulator()" min="0" max="50" step="1" value="5" class="w-full slider-track h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer">
             </div>
         </div>
     </div>
 </div>
-        <button onclick="runPrediction()" class="w-full group relative bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-xl shadow-slate-900/10 transition-all duration-300 active:scale-[0.98]">
-            <div class="flex items-center justify-center gap-2">
-                <span class="text-xs uppercase tracking-widest group-hover:tracking-wider transition-all">Predict Persona</span>
-                <i class="fa-solid fa-arrow-right text-indigo-400 group-hover:text-white transition-colors"></i>
-            </div>
-        </button>
+
+<button onclick="runPrediction()" class="w-full group relative overflow-hidden bg-slate-900 hover:bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-xl shadow-slate-900/10 transition-all duration-300 active:scale-[0.99]">
+    <div class="relative z-10 flex items-center justify-center gap-3">
+        <span class="text-xs uppercase tracking-[0.2em] group-hover:tracking-[0.25em] transition-all">Predict Persona & Match Products</span>
+        <i class="fa-solid fa-arrow-right text-indigo-400 group-hover:text-white transition-colors"></i>
     </div>
-</div>
+    <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>

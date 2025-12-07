@@ -17,7 +17,8 @@
     function init() {
         renderAuth();
         bindSliders();
-        loadMetrics(); // Pre-load metrics silently
+        updateLiveSimulator(); 
+        loadMetrics(); 
         
         const savedLogs = localStorage.getItem('sessionLogs');
         if(savedLogs) { 
@@ -35,6 +36,47 @@
         }
     }
 
+    function updateLiveSimulator() {
+        const money = parseFloat(document.getElementById('in-money').value);
+        const freq = parseInt(document.getElementById('in-freq').value);
+        const views = parseInt(document.getElementById('in-views').value);
+        const cart = parseInt(document.getElementById('in-cart').value);
+
+        const rfmTag = document.getElementById('live-rfm-tag');
+        const rfmBar = document.getElementById('indicator-rfm');
+        
+        if (money > 2500) {
+            rfmTag.innerText = "HIGH ROLLER";
+            rfmTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 transition-colors";
+            rfmBar.className = "absolute top-0 left-0 w-1.5 h-full bg-amber-500 transition-all duration-300";
+        } else if (money > 500 && freq > 10) {
+            rfmTag.innerText = "CONSISTENT";
+            rfmTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 transition-colors";
+            rfmBar.className = "absolute top-0 left-0 w-1.5 h-full bg-emerald-500 transition-all duration-300";
+        } else {
+            rfmTag.innerText = "CASUAL / LOW";
+            rfmTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 transition-colors";
+            rfmBar.className = "absolute top-0 left-0 w-1 h-full bg-slate-300 transition-all duration-300";
+        }
+
+        const engTag = document.getElementById('live-eng-tag');
+        const engBar = document.getElementById('indicator-eng');
+
+        if (views > 200 || cart > 20) {
+            engTag.innerText = "HYPER ACTIVE";
+            engTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 transition-colors";
+            engBar.className = "absolute top-0 left-0 w-1.5 h-full bg-blue-500 transition-all duration-300";
+        } else if (views > 50) {
+            engTag.innerText = "BROWSING";
+            engTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-pink-100 text-pink-700 transition-colors";
+            engBar.className = "absolute top-0 left-0 w-1.5 h-full bg-pink-500 transition-all duration-300";
+        } else {
+            engTag.innerText = "DORMANT";
+            engTag.className = "px-3 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 transition-colors";
+            engBar.className = "absolute top-0 left-0 w-1 h-full bg-slate-300 transition-all duration-300";
+        }
+    }
+
     function handleLogin() {
         doAuth('login');
     }
@@ -42,7 +84,6 @@
     function handleRegister() {
         doAuth('register');
     }
-
 
     function switchView(viewName) {
         ['view-dashboard', 'view-insights', 'view-pipeline'].forEach(id => {
@@ -98,13 +139,11 @@
     function renderCharts() {
         if(!metrics || !metrics.elbow_curve) return;
 
-        // Update Text
         const silEl = document.getElementById('valSil');
         const inertiaEl = document.getElementById('valInertia');
         if(silEl) silEl.innerText = metrics.silhouette_score;
         if(inertiaEl) inertiaEl.innerText = Math.round(metrics.inertia);
 
-        // 1. ELBOW
         const ctxElbow = document.getElementById('chart-elbow');
         if(ctxElbow) {
             if(elbowChartInstance) elbowChartInstance.destroy();
@@ -118,7 +157,6 @@
             });
         }
 
-        // 2. PIE
         const ctxPie = document.getElementById('chart-pie');
         if(ctxPie) {
             if(pieChartInstance) pieChartInstance.destroy();
@@ -129,7 +167,6 @@
             });
         }
 
-        // 3. RADAR
         const ctxRadar = document.getElementById('chart-radar');
         if(ctxRadar) {
             if(chartInstance) chartInstance.destroy();
@@ -140,7 +177,6 @@
             });
         }
 
-        // 4. TABLE
         const tableBody = document.getElementById('table-centroids');
         if(tableBody) {
              tableBody.innerHTML = metrics.centroids_real.map((c, i) => `
@@ -199,41 +235,79 @@
     function logout() { localStorage.clear(); token=null; user=null; renderAuth(); toast('Logged Out', 'info'); }
 
     function bindSliders() {
-    const updateVal = (id, val, pre='', post='') => { 
-        const key = id.split('-')[1];
-        const el = document.getElementById(`disp-${key}`); 
-        if(el) el.innerText = pre + val + post; 
-    };
-    
-    document.getElementById('in-money').addEventListener('input', (e) => updateVal(e.target.id, e.target.value, '$'));
-    document.getElementById('in-freq').addEventListener('input', (e) => updateVal(e.target.id, e.target.value));
-    document.getElementById('in-rec').addEventListener('input', (e) => updateVal(e.target.id, e.target.value, '', ' days'));
-    document.getElementById('in-views').addEventListener('input', (e) => updateVal(e.target.id, e.target.value));
-    document.getElementById('in-cart').addEventListener('input', (e) => updateVal(e.target.id, e.target.value));
-    document.getElementById('in-wish').addEventListener('input', (e) => updateVal(e.target.id, e.target.value));
-}
+        const updateVal = (id, val, pre='', post='') => { 
+            const key = id.split('-')[1];
+            const el = document.getElementById(`disp-${key}`); 
+            if(el) el.innerText = pre + val + post; 
+        };
+        
+        document.getElementById('in-money').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value, '$');
+            updateLiveSimulator();
+        });
+        document.getElementById('in-freq').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value);
+            updateLiveSimulator();
+        });
+        document.getElementById('in-rec').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value, '', ' days');
+            updateLiveSimulator();
+        });
+        document.getElementById('in-views').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value);
+            updateLiveSimulator();
+        });
+        document.getElementById('in-cart').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value);
+            updateLiveSimulator();
+        });
+        document.getElementById('in-wish').addEventListener('input', (e) => {
+            updateVal(e.target.id, e.target.value);
+            updateLiveSimulator();
+        });
+    }
 
     function generateInsights(payload, clusterIdx) {
-        if(!metrics || !metrics.centroids_real) return { why: "Data metrics not loaded.", compare: "Analysis unavailable.", anomaly: "Unknown." };
-        const centroid = metrics.centroids_real[clusterIdx];
-        const globalAvgMoney = metrics.centroids_real.reduce((a,b)=>a+b.Monetary,0)/4;
+        if(!metrics || !metrics.centroids_real) return {
+            why: "Data metrics not loaded yet.",
+            compare: "Cannot compare without baseline.",
+            anomaly: "Unknown."
+        };
 
-        // INSIGHT BUILDER (Comparison Logic)
-        let why = `User mapped to ${CLUSTERS[clusterIdx]} based on feature vector proximity.`;
-        if (payload.Monetary > centroid.Monetary * 1.1) why = `User Spend ($${payload.Monetary}) is significantly higher than the cluster average ($${Math.round(centroid.Monetary)}).`;
-        else if (payload.Page_Views > centroid.Page_Views * 1.3) why = `High engagement (Views: ${payload.Page_Views}) drives this classification despite lower spend.`;
+        const centroid = metrics.centroids_real[clusterIdx];
+        let why = "User behavior aligns with standard segment profile.";
         
-        let pressure = "Stable";
-        if (payload.Recency > 60) pressure = "High Risk (Churn)";
-        else if (payload.Recency < 10 && payload.Frequency > 10) pressure = "High Opportunity";
+        if (payload.Page_Views > centroid.Page_Views * 1.2 && payload.Frequency < centroid.Frequency) {
+            why = "High engagement intent detected, but conversion rate lags behind segment average.";
+        } else if (payload.Page_Views < centroid.Page_Views * 0.8 && payload.Monetary > centroid.Monetary) {
+            why = "Decisive buyer pattern: High transaction value with minimal browsing time.";
+        } else if (payload.Add_to_Cart_Count > centroid.Add_to_Cart_Count * 1.5 && payload.Frequency <= centroid.Frequency) {
+            why = "Cart abandonment risk: User adds significantly more items than they purchase.";
+        } else if (payload.Monetary > centroid.Monetary && payload.Recency > 60) {
+            why = "Dormant VIP: High historical value but inactive for an extended period.";
+        }
 
         const diffMoney = ((payload.Monetary - centroid.Monetary) / centroid.Monetary) * 100;
-        let compare = `Spending is ${Math.abs(diffMoney).toFixed(1)}% ${diffMoney >= 0 ? 'above' : 'below'} segment average.`;
+        let pressure = "Stable";
+        
+        if (payload.Recency > 90) pressure = "High Risk (Churn)";
+        else if (payload.Recency > 45 && payload.Monetary > 2000) pressure = "Medium Risk";
+        else if (payload.Recency < 7 && payload.Frequency > 10) pressure = "High Opportunity";
+
+        let compare = `Spending ${Math.abs(diffMoney).toFixed(1)}% ${diffMoney >= 0 ? 'above' : 'below'} avg. Status: ${pressure}.`;
 
         let action = "Maintain standard communication.";
-        if (pressure.includes("Churn") && payload.Monetary > 1500) action = "🚨 URGENT: Deploy Win-back Campaign via Direct Call.";
-        else if (payload.Page_Views > 60 && payload.Frequency < 2) action = "💡 OPPORTUNITY: Send First-Purchase Discount Coupon.";
-        else if (clusterIdx === 3) action = "⭐ VIP: Offer Early Access to New Collections.";
+        if (pressure.includes("Churn") && payload.Monetary > 1500) {
+            action = "🚨 URGENT: Deploy Win-back Campaign via Direct Call/SMS.";
+        } else if (payload.Page_Views > 60 && payload.Frequency === 0) {
+            action = "💡 OPPORTUNITY: Send First-Purchase Discount Coupon.";
+        } else if (payload.Add_to_Cart_Count > 10 && payload.Recency < 3) {
+            action = "🔥 HOT LEAD: Trigger 'Items in Cart' Reminder immediately.";
+        } else if (clusterIdx === 3 && payload.Recency < 14) {
+            action = "⭐ VIP: Offer Early Access to New Collections.";
+        } else if (payload.Wishlist_Count > 5) {
+            action = "🔔 NUDGE: Notify regarding stock availability for wishlist.";
+        }
 
         return { why, compare, anomaly: action };
     }
@@ -243,6 +317,8 @@
         document.getElementById('in-freq').value=5; document.getElementById('in-rec').value=30;
         document.getElementById('in-views').value=50; document.getElementById('disp-views').innerText='50';
         document.getElementById('in-cart').value=15; document.getElementById('disp-cart').innerText='15';
+        
+        updateLiveSimulator();
         toast('Reset', 'info');
     }
 
@@ -303,31 +379,29 @@
             </div>`).join('');
         
         const currentPayload = {
-        Monetary: parseFloat(document.getElementById('in-money').value),
-        Frequency: parseInt(document.getElementById('in-freq').value),
-        Recency: parseInt(document.getElementById('in-rec').value),
-        Page_Views: parseInt(document.getElementById('in-views').value),
-        Add_to_Cart_Count: parseInt(document.getElementById('in-cart').value),
-        Wishlist_Count: parseInt(document.getElementById('in-wish').value)
-    };
-    
-    const insights = generateInsights(currentPayload, data.cluster);
-    
-    document.getElementById('bs-why').innerText = insights.why;
-    document.getElementById('bs-compare').innerText = insights.compare;
-    
-    // Bagian Anomaly sekarang menjadi Strategic Action
-    const anomalyEl = document.getElementById('bs-anomaly');
-    anomalyEl.innerText = insights.anomaly;
-    
-    // Update styling dinamis untuk action urgency
-    if(insights.anomaly.includes("URGENT")) {
-        anomalyEl.className = "text-[10px] font-bold text-red-600 bg-red-50 p-2 rounded border border-red-100 mt-auto animate-pulse";
-    } else if (insights.anomaly.includes("OPPORTUNITY") || insights.anomaly.includes("HOT")) {
-        anomalyEl.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 p-2 rounded border border-emerald-100 mt-auto";
-    } else {
-        anomalyEl.className = "text-[10px] font-bold text-slate-600 bg-slate-50 p-2 rounded border border-slate-200 mt-auto";
-    }
+            Monetary: parseFloat(document.getElementById('in-money').value),
+            Frequency: parseInt(document.getElementById('in-freq').value),
+            Recency: parseInt(document.getElementById('in-rec').value),
+            Page_Views: parseInt(document.getElementById('in-views').value),
+            Add_to_Cart_Count: parseInt(document.getElementById('in-cart').value),
+            Wishlist_Count: parseInt(document.getElementById('in-wish').value)
+        };
+        
+        const insights = generateInsights(currentPayload, data.cluster);
+        
+        document.getElementById('bs-why').innerText = insights.why;
+        document.getElementById('bs-compare').innerText = insights.compare;
+        
+        const anomalyEl = document.getElementById('bs-anomaly');
+        anomalyEl.innerText = insights.anomaly;
+        
+        if(insights.anomaly.includes("URGENT")) {
+            anomalyEl.className = "text-[10px] font-bold text-red-600 bg-red-50 p-2 rounded border border-red-100 mt-auto animate-pulse";
+        } else if (insights.anomaly.includes("OPPORTUNITY") || insights.anomaly.includes("HOT")) {
+            anomalyEl.className = "text-[10px] font-bold text-emerald-600 bg-emerald-50 p-2 rounded border border-emerald-100 mt-auto";
+        } else {
+            anomalyEl.className = "text-[10px] font-bold text-slate-600 bg-slate-50 p-2 rounded border border-slate-200 mt-auto";
+        }
     }
 
     function addLog(cluster, money) {

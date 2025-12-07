@@ -1,101 +1,101 @@
 product_id,product_name,category,price,tier,complexity_score,popularity_score
-100,Budget Skincare - Security,Skincare,18,Budget,0.04,0.018265963864594337
-101,Standard Electronics - Attack,Electronics,86,Standard,0.17,0.05253828730800936
-102,Premium Automotive - Wide,Automotive,326,Premium,0.65,7.056075872576118
-103,Luxury Electronics - Natural,Electronics,2768,Luxury,5.54,0.41189177435724145
-104,Premium Electronics - Lose,Electronics,250,Premium,0.5,2.406881010326014
-105,Standard Skincare - No,Skincare,147,Standard,0.29,7.624177298169686
-106,Budget Home & Living - Throw,Home & Living,15,Budget,0.03,5.3056241461534945
-107,Budget Home & Living - Season,Home & Living,24,Budget,0.05,8.546662652444244
-108,Budget Skincare - Degree,Skincare,39,Budget,0.08,4.106895127288527
-109,Premium Skincare - Area,Skincare,600,Premium,1.2,0.7774408649783138
-110,Luxury Home & Living - Shoulder,Home & Living,1980,Luxury,3.96,7.560626031993078
-111,Budget Fashion - Participant,Fashion,37,Budget,0.07,0.409833830702645
-112,Budget Automotive - Light,Automotive,34,Budget,0.07,4.288478473503003
-113,Budget Home & Living - Guy,Home & Living,34,Budget,0.07,9.129275220686441
-114,Budget Fashion - Soldier,Fashion,29,Budget,0.06,2.8235046196080593
-115,Standard Fashion - Type,Fashion,55,Standard,0.11,9.164041691759428
-116,Budget Fashion - Between,Fashion,28,Budget,0.06,8.925916117854193
-117,Budget Automotive - Tend,Automotive,31,Budget,0.06,8.080096214259761
-118,Standard Electronics - Growth,Electronics,108,Standard,0.22,3.6003750087650332
-119,Budget Electronics - Soon,Electronics,7,Budget,0.01,7.031856363237578
-120,Luxury Fashion - This,Fashion,1509,Luxury,3.02,9.223374261343956
-121,Luxury Home & Living - Finally,Home & Living,2092,Luxury,4.18,2.8483788955534353
-122,Standard Skincare - Agency,Skincare,122,Standard,0.24,3.560711699926707
-123,Standard Skincare - Market,Skincare,96,Standard,0.19,2.8882402937241816
-124,Standard Automotive - Oil,Automotive,127,Standard,0.25,5.555345316429875
-125,Budget Electronics - Perhaps,Electronics,39,Budget,0.08,7.150207281121742
-126,Standard Home & Living - Hundred,Home & Living,128,Standard,0.26,2.7436824524091463
-127,Premium Automotive - This,Automotive,249,Premium,0.5,7.4748763251190455
-128,Premium Automotive - Foot,Automotive,729,Premium,1.46,6.779065491152924
-129,Standard Skincare - Police,Skincare,64,Standard,0.13,1.68187995130883
-130,Budget Skincare - Test,Skincare,21,Budget,0.04,9.689235689201492
-131,Premium Home & Living - Mission,Home & Living,311,Premium,0.62,3.9814738925504845
-132,Premium Skincare - Police,Skincare,800,Premium,1.6,6.314388463070931
-133,Luxury Fashion - Level,Fashion,1427,Luxury,2.85,6.790754038920817
-134,Standard Skincare - Bed,Skincare,144,Standard,0.29,5.084714524297505
-135,Standard Fashion - Do,Fashion,59,Standard,0.12,6.720122904747036
-136,Budget Skincare - Next,Skincare,31,Budget,0.06,4.195571469347737
-137,Premium Electronics - Head,Electronics,436,Premium,0.87,8.80492027586094
-138,Standard Skincare - War,Skincare,140,Standard,0.28,8.940079151784003
-139,Premium Fashion - Pass,Fashion,699,Premium,1.4,7.836726787915689
-140,Budget Fashion - Agree,Fashion,19,Budget,0.04,8.704574607282288
-141,Premium Electronics - And,Electronics,237,Premium,0.47,0.7398312204643764
-142,Budget Fashion - Others,Fashion,34,Budget,0.07,6.92521366433896
-143,Premium Automotive - Social,Automotive,367,Premium,0.73,9.469278057556505
-144,Budget Electronics - Edge,Electronics,37,Budget,0.07,9.50775059127249
-145,Luxury Home & Living - Force,Home & Living,4466,Luxury,8.93,4.966143387481824
-146,Standard Skincare - Matter,Skincare,99,Standard,0.2,6.024855195694543
-147,Luxury Electronics - Thus,Electronics,2271,Luxury,4.54,7.688817119483477
-148,Standard Automotive - Task,Automotive,57,Standard,0.11,8.501960017491255
-149,Premium Fashion - Almost,Fashion,445,Premium,0.89,8.467363080933087
-150,Premium Electronics - Support,Electronics,757,Premium,1.51,9.114947074604881
-151,Budget Electronics - Matter,Electronics,27,Budget,0.05,8.55188401745429
-152,Premium Automotive - Hear,Automotive,282,Premium,0.56,9.780882138921672
-153,Budget Skincare - Involve,Skincare,27,Budget,0.05,0.8878377478700616
-154,Premium Home & Living - Can,Home & Living,428,Premium,0.86,2.8609055225141136
-155,Budget Automotive - Already,Automotive,8,Budget,0.02,7.082823594211764
-156,Budget Home & Living - Field,Home & Living,35,Budget,0.07,3.4149807191111528
-157,Luxury Electronics - Gas,Electronics,2205,Luxury,4.41,2.876680628785897
-158,Budget Automotive - Think,Automotive,36,Budget,0.07,2.1397935068088767
-159,Premium Automotive - Out,Automotive,455,Premium,0.91,9.376371751534695
-160,Premium Home & Living - But,Home & Living,322,Premium,0.64,0.7356011811003027
-161,Standard Electronics - Structure,Electronics,113,Standard,0.23,7.124847199939815
-162,Premium Automotive - Theory,Automotive,225,Premium,0.45,8.505708796955739
-163,Standard Fashion - Million,Fashion,130,Standard,0.26,5.598664154860106
-164,Standard Home & Living - Mind,Home & Living,123,Standard,0.25,7.4957458506550925
-165,Budget Skincare - Floor,Skincare,19,Budget,0.04,0.23804670662845195
-166,Standard Fashion - Card,Fashion,115,Standard,0.23,2.3486243354960266
-167,Budget Automotive - Network,Automotive,16,Budget,0.03,8.633448038750997
-168,Premium Skincare - Any,Skincare,397,Premium,0.79,0.8967620411588684
-169,Budget Home & Living - Speak,Home & Living,40,Budget,0.08,2.488265963704185
-170,Standard Home & Living - Station,Home & Living,142,Standard,0.28,7.657887675078423
-171,Premium Fashion - Several,Fashion,484,Premium,0.97,5.852514474566628
-172,Standard Fashion - Tend,Fashion,137,Standard,0.27,0.869752352663441
-173,Premium Electronics - Go,Electronics,422,Premium,0.84,0.4228931494206001
-174,Standard Automotive - History,Automotive,150,Standard,0.3,8.750374232649689
-175,Premium Automotive - West,Automotive,265,Premium,0.53,2.0935329609071984
-176,Standard Fashion - Beat,Fashion,104,Standard,0.21,2.126281622275137
-177,Standard Electronics - One,Electronics,104,Standard,0.21,3.0217914766315945
-178,Budget Electronics - Prepare,Electronics,13,Budget,0.03,1.719614717214436
-179,Premium Skincare - Person,Skincare,560,Premium,1.12,9.042049959124515
-180,Budget Automotive - So,Automotive,30,Budget,0.06,8.397434758190025
-181,Premium Home & Living - Record,Home & Living,274,Premium,0.55,1.20101396100463
-182,Luxury Home & Living - Himself,Home & Living,4446,Luxury,8.89,6.709612350478501
-183,Budget Electronics - Reality,Electronics,40,Budget,0.08,7.854831811001791
-184,Budget Automotive - Child,Automotive,10,Budget,0.02,9.27484291518418
-185,Budget Fashion - Focus,Fashion,9,Budget,0.02,7.936992072799174
-186,Budget Skincare - Focus,Skincare,29,Budget,0.06,2.2823678519541635
-187,Budget Automotive - List,Automotive,31,Budget,0.06,2.627487749175775
-188,Standard Skincare - Far,Skincare,72,Standard,0.14,1.6954970539933267
-189,Budget Electronics - Painting,Electronics,33,Budget,0.07,6.092192094497358
-190,Premium Electronics - Present,Electronics,762,Premium,1.52,9.394047400202044
-191,Standard Automotive - Reason,Automotive,145,Standard,0.29,3.817173215455032
-192,Budget Home & Living - Attack,Home & Living,10,Budget,0.02,1.1209857105322074
-193,Standard Home & Living - Leader,Home & Living,134,Standard,0.27,8.78312733052981
-194,Standard Fashion - Radio,Fashion,139,Standard,0.28,6.746038794572807
-195,Premium Electronics - Color,Electronics,754,Premium,1.51,6.364125535101172
-196,Premium Skincare - Oil,Skincare,757,Premium,1.51,8.633147426943529
-197,Budget Skincare - Traditional,Skincare,35,Budget,0.07,7.74582083428018
-198,Budget Electronics - Value,Electronics,11,Budget,0.02,2.752325633411181
-199,Luxury Home & Living - Push,Home & Living,3964,Luxury,7.93,1.6581170764170972
+100,Oxford Shirt - Yard Edition,Fashion,106,Standard,0.21,5.265106330671763
+101,AA Batteries (4-Pack) - Baby Edition,Electronics,11,Budget,0.02,7.27241854745282
+102,Vitamin C Serum - History Edition,Skincare,55,Standard,0.11,1.424915251072274
+103,Silk Scarf,Fashion,513,Premium,1.03,0.5436033177673738
+104,Facial Cleanser Foam,Skincare,10,Budget,0.02,1.521037022966426
+105,Cashmere Trench Coat,Fashion,4991,Luxury,9.98,4.451057585103215
+106,Screen Protector,Electronics,19,Budget,0.04,2.771670771818442
+107,Espresso Machine - Truth Edition,Home & Living,528,Premium,1.06,1.0313409675255347
+108,Facial Cleanser Foam,Skincare,26,Budget,0.05,2.311200327937396
+109,Basic Wired Earphones - Cell Edition,Electronics,9,Budget,0.02,5.11279240072232
+110,Cotton Pads - Ball Edition,Skincare,40,Budget,0.08,0.9192322859429913
+111,Kitchen Towel Set - Value Edition,Home & Living,23,Budget,0.05,7.965874240550532
+112,Sunscreen SPF 50,Skincare,65,Standard,0.13,3.9783859902130536
+113,Smart Door Lock - Television Edition,Home & Living,513,Premium,1.03,1.675262651135312
+114,Flip Flops,Fashion,35,Budget,0.07,7.212179196222771
+115,Massage Chair Zero-G - System Edition,Home & Living,2363,Luxury,4.73,1.337145692974997
+116,Clay Mask,Skincare,126,Standard,0.25,9.271389522666219
+117,USB-C Cable 1m,Electronics,16,Budget,0.03,6.716206050861359
+118,Monitor 24-inch IPS - Against Edition,Electronics,465,Premium,0.93,3.710161062109724
+119,Succulent Pot Set,Home & Living,136,Standard,0.27,5.819993133775883
+120,AA Batteries (4-Pack),Electronics,19,Budget,0.04,4.461412673806452
+121,Succulent Pot Set - Enjoy Edition,Home & Living,129,Standard,0.26,6.91915598408243
+122,Plastic Food Container - Life Edition,Home & Living,16,Budget,0.03,4.767781505093666
+123,Merino Wool Sweater,Fashion,278,Premium,0.56,0.16858125827699522
+124,Flip Flops,Fashion,32,Budget,0.06,4.325223968726782
+125,Microfiber Cloth,Home & Living,8,Budget,0.02,0.1732171580934494
+126,Hair Loss Tonic,Skincare,309,Premium,0.62,5.6397962151276095
+127,8K OLED TV 65-inch,Electronics,2196,Luxury,4.39,3.439646338924444
+128,Oxford Shirt - Lay Edition,Fashion,110,Standard,0.22,4.517064086465452
+129,Toner Hydrating - Woman Edition,Skincare,55,Standard,0.11,8.930310196828808
+130,Electric Face Cleanser - Listen Edition,Skincare,431,Premium,0.86,6.183946262181582
+131,Sunscreen SPF 50 - Home Edition,Skincare,69,Standard,0.14,4.857832505709422
+132,Silk Scarf - Can Edition,Fashion,512,Premium,1.02,2.7317363560679473
+133,Fast Charger 30W,Electronics,150,Standard,0.3,3.714955582286289
+134,Mechanical Keyboard RGB - Sometimes Edition,Electronics,737,Premium,1.47,6.473135578901569
+135,Slim Fit Chinos,Fashion,136,Standard,0.27,5.273144014144683
+136,Memory Foam Pillow - Attack Edition,Home & Living,98,Standard,0.2,0.8396493456887011
+137,Sony Alpha A7 IV Camera - Painting Edition,Electronics,1766,Luxury,3.53,6.140895622540443
+138,Smart Door Lock - Light Edition,Home & Living,632,Premium,1.26,9.548290129613068
+139,Hand Cream Mini,Skincare,9,Budget,0.02,9.644500817942252
+140,MacBook Pro M3 Max,Electronics,3066,Luxury,6.13,0.022720283033867972
+141,Baseball Cap - Example Edition,Fashion,20,Budget,0.04,0.11500812117092529
+142,Slim Fit Chinos - Though Edition,Fashion,117,Standard,0.23,2.3757895831011835
+143,Daily Moisturizer - Forward Edition,Skincare,83,Standard,0.17,2.4562374695908806
+144,Powerbank 10000mAh,Electronics,142,Standard,0.28,9.87261783453236
+145,Basic Wired Earphones,Electronics,31,Budget,0.06,2.3867188675088857
+146,Silk Scarf - Office Edition,Fashion,608,Premium,1.22,6.13580709501417
+147,Ankle Socks (3-Pair),Fashion,5,Budget,0.01,8.29608060061568
+148,Denim Jacket Classic - Work Edition,Fashion,87,Standard,0.17,1.85944821051777
+149,USB-C Cable 1m,Electronics,37,Budget,0.07,5.776039717348152
+150,Persian Rug Hand-Woven - Hot Edition,Home & Living,4218,Luxury,8.44,4.8570589434241676
+151,Hand Cream Mini - Argue Edition,Skincare,18,Budget,0.04,1.3531516126462373
+152,Kitchen Towel Set,Home & Living,30,Budget,0.06,3.262982826806642
+153,Wireless Earbuds Basic - Leg Edition,Electronics,134,Standard,0.27,0.6246144614804172
+154,Microfiber Cloth,Home & Living,6,Budget,0.01,7.466169864247228
+155,AA Batteries (4-Pack),Electronics,15,Budget,0.03,8.36756905422692
+156,Leather Chelsea Boots - Hundred Edition,Fashion,453,Premium,0.91,2.278294788242631
+157,Lip Balm Moisturizing,Skincare,31,Budget,0.06,4.270285958861879
+158,Sheet Mask Aloe,Skincare,39,Budget,0.08,9.870296730249024
+159,Monitor 24-inch IPS,Electronics,789,Premium,1.58,3.180853446146342
+160,Monitor 24-inch IPS - Public Edition,Electronics,587,Premium,1.17,1.7090299530398423
+161,Phone Case Silicone,Electronics,32,Budget,0.06,5.383949432050596
+162,Clay Mask - Start Edition,Skincare,73,Standard,0.15,9.987599306877842
+163,Plastic Food Container - West Edition,Home & Living,12,Budget,0.02,5.3778999314648885
+164,Home Theater System,Home & Living,3835,Luxury,7.67,8.097502092708439
+165,Basic Wired Earphones - Discover Edition,Electronics,14,Budget,0.03,1.0451661509648436
+166,Microfiber Cloth - Never Edition,Home & Living,10,Budget,0.02,7.546247423916372
+167,Vitamin C Serum,Skincare,129,Standard,0.26,1.578050630062764
+168,Hand Cream Mini - Network Edition,Skincare,8,Budget,0.02,6.089057031666281
+169,AA Batteries (4-Pack) - South Edition,Electronics,34,Budget,0.07,5.0564028016809175
+170,Cotton Pads,Skincare,15,Budget,0.03,5.017072462798984
+171,Desk Organizer - Talk Edition,Home & Living,29,Budget,0.06,1.717749883336438
+172,Sunscreen SPF 50 - Car Edition,Skincare,78,Standard,0.16,6.168833637365489
+173,Oxford Shirt - Strong Edition,Fashion,61,Standard,0.12,3.268209440886193
+174,Screen Protector - Speak Edition,Electronics,21,Budget,0.04,3.916173571732291
+175,Cotton Pads - Left Edition,Skincare,16,Budget,0.03,4.286565665544554
+176,Sheet Mask Aloe - Cold Edition,Skincare,34,Budget,0.07,4.500567824481295
+177,Tablet Android 10-inch - Health Edition,Electronics,611,Premium,1.22,7.333294557573229
+178,Sunscreen SPF 50 - Success Edition,Skincare,53,Standard,0.11,4.676226070506058
+179,Essence Fermented - Movement Edition,Skincare,595,Premium,1.19,6.346734463197331
+180,MacBook Pro M3 Max - Unit Edition,Electronics,2075,Luxury,4.15,9.831283575824898
+181,Screen Protector,Electronics,16,Budget,0.03,2.8269869259812284
+182,Ergonomic Office Chair,Home & Living,332,Premium,0.66,2.9232529118204766
+183,Vitamin C Serum - As Edition,Skincare,119,Standard,0.24,4.284433068019275
+184,Desk Lamp LED,Home & Living,71,Standard,0.14,9.13604768275135
+185,Sheet Mask Aloe,Skincare,30,Budget,0.06,0.34800505713901364
+186,USB-C Cable 1m - Place Edition,Electronics,7,Budget,0.01,8.017121619364165
+187,Basic Wired Earphones,Electronics,40,Budget,0.08,4.786312211611046
+188,Kitchen Towel Set - Hundred Edition,Home & Living,9,Budget,0.02,0.1702247275752633
+189,Facial Cleanser Foam - Attorney Edition,Skincare,22,Budget,0.04,0.29633770726918307
+190,Air Purifier HEPA,Home & Living,313,Premium,0.63,0.9329453922700504
+191,Canvas Tote Bag,Fashion,23,Budget,0.05,5.884335293557042
+192,Powerbank 10000mAh,Electronics,126,Standard,0.25,8.881427044245628
+193,Basic Wired Earphones - Believe Edition,Electronics,6,Budget,0.01,6.121814306228991
+194,Plastic Food Container,Home & Living,25,Budget,0.05,8.67183097297327
+195,Powerbank 10000mAh,Electronics,113,Standard,0.23,2.384344193948571
+196,Noise Cancelling Headphones - Easy Edition,Electronics,287,Premium,0.57,7.802166023623042
+197,Sunscreen SPF 50 - Dream Edition,Skincare,112,Standard,0.22,1.0887494411650722
+198,Bath Towel Premium,Home & Living,125,Standard,0.25,3.434098007410391
+199,Daily Moisturizer,Skincare,97,Standard,0.19,7.658031658780027

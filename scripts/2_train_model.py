@@ -3,15 +3,18 @@ import numpy as np
 import joblib
 import json
 import os
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
+from sklearn.metrics.pairwise import cosine_similarity
 
-BASE_DIR = "/code/app/ml"
+BASE_DIR = "app/ml"
 os.makedirs(BASE_DIR, exist_ok=True)
 
 df = pd.read_csv(f"{BASE_DIR}/dummy_ecommerce_clustered.csv")
+df_prods = pd.read_csv(f"{BASE_DIR}/products_dummy.csv")
+
 df["Monetary_Log"] = np.log1p(df["Monetary"])
 
 features = [
@@ -49,6 +52,28 @@ kmeans_final = KMeans(n_clusters=4, init=sorted_centers, n_init=1, random_state=
 kmeans_final.fit(X_scaled)
 df["Cluster"] = df["Temp"].map(mapping)
 
+prod_scaler = MinMaxScaler()
+prod_features = df_prods[['price', 'complexity_score']].values
+prod_vectors = prod_scaler.fit_transform(prod_features)
+
+centroids = kmeans_final.cluster_centers_
+cluster_spending_power = centroids[:, [2, 3]] 
+cluster_vectors = prod_scaler.fit_transform(cluster_spending_power) 
+
+similarity_matrix = cosine_similarity(cluster_vectors, prod_vectors)
+
+recommendations = {}
+cluster_names = ["Newbie", "Window Shopper", "Loyalist", "Sultan"]
+
+for i in range(4):
+    top_indices = similarity_matrix[i].argsort()[-6:][::-1]
+    selected_prods = df_prods.iloc[top_indices].to_dict(orient="records")
+    
+    for p in selected_prods:
+        p['reason'] = f"Matches {cluster_names[i]} spending profile"
+        
+    recommendations[i] = selected_prods
+
 centroids_real = scaler.inverse_transform(kmeans_final.cluster_centers_)
 real_df = pd.DataFrame(centroids_real, columns=features)
 real_df["Monetary"] = np.expm1(real_df["Monetary_Log"]) 
@@ -59,7 +84,7 @@ metadata = {
     "inertia": round(kmeans_final.inertia_, 2),
     "features": features,
     "feature_readable": feature_readable,
-    "cluster_names": ["Newbie", "Window Shopper", "Loyalist", "Sultan"],
+    "cluster_names": cluster_names,
     "centroids_scaled": kmeans_final.cluster_centers_.tolist(),
     "centroids_real": real_df.to_dict(orient="records"),
     "cluster_counts": df["Cluster"].value_counts().sort_index().to_dict(),
@@ -76,8 +101,6 @@ with open(f"{BASE_DIR}/model_metrics.json", "w") as f:
 
 joblib.dump(scaler, f"{BASE_DIR}/scaler_preproc.joblib")
 joblib.dump(kmeans_final, f"{BASE_DIR}/kmeans_k2.joblib")
-
-topN = {i: [{"product_id": 100+i, "name": "Item", "category": "General"}] for i in range(4)}
-joblib.dump(topN, f"{BASE_DIR}/topN_by_cluster.joblib")
+joblib.dump(recommendations, f"{BASE_DIR}/topN_by_cluster.joblib")
 
 print("Training Complete")

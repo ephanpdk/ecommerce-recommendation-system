@@ -1,51 +1,101 @@
-product_id,product_name,category,style
-100,Fashion Item Both,Fashion,General
-101,Skincare Item Future,Skincare,General
-102,Fashion Item Section,Fashion,General
-103,Fashion Item Plant,Fashion,General
-104,Fashion Item This,Fashion,General
-105,Home & Living Item Law,Home & Living,General
-106,Skincare Item Majority,Skincare,General
-107,Fashion Item Future,Fashion,General
-108,Home & Living Item Authority,Home & Living,General
-109,Electronics Item Economy,Electronics,General
-110,Home & Living Item Really,Home & Living,General
-111,Home & Living Item Big,Home & Living,General
-112,Home & Living Item Only,Home & Living,General
-113,Skincare Item Most,Skincare,General
-114,Home & Living Item Media,Home & Living,General
-115,Electronics Item Management,Electronics,General
-116,Home & Living Item Maybe,Home & Living,General
-117,Home & Living Item Study,Home & Living,General
-118,Fashion Item Military,Fashion,General
-119,Fashion Item Late,Fashion,General
-120,Skincare Item Provide,Skincare,General
-121,Home & Living Item Common,Home & Living,General
-122,Home & Living Item Join,Home & Living,General
-123,Fashion Item Thus,Fashion,General
-124,Fashion Item To,Fashion,General
-125,Skincare Item Upon,Skincare,General
-126,Skincare Item Agent,Skincare,General
-127,Fashion Item Pattern,Fashion,General
-128,Electronics Item Something,Electronics,General
-129,Fashion Item Room,Fashion,General
-130,Skincare Item Paper,Skincare,General
-131,Electronics Item Lot,Electronics,General
-132,Home & Living Item Many,Home & Living,General
-133,Electronics Item Thank,Electronics,General
-134,Home & Living Item Herself,Home & Living,General
-135,Home & Living Item Hour,Home & Living,General
-136,Skincare Item Dark,Skincare,General
-137,Electronics Item Develop,Electronics,General
-138,Skincare Item Really,Skincare,General
-139,Home & Living Item Scientist,Home & Living,General
-140,Skincare Item Especially,Skincare,General
-141,Fashion Item Book,Fashion,General
-142,Skincare Item This,Skincare,General
-143,Fashion Item Within,Fashion,General
-144,Electronics Item Where,Electronics,General
-145,Home & Living Item Morning,Home & Living,General
-146,Skincare Item Difficult,Skincare,General
-147,Fashion Item Executive,Fashion,General
-148,Fashion Item Animal,Fashion,General
-149,Electronics Item Environment,Electronics,General
+product_id,product_name,category,price,tier,complexity_score,popularity_score
+100,Budget Skincare - Security,Skincare,18,Budget,0.04,0.018265963864594337
+101,Standard Electronics - Attack,Electronics,86,Standard,0.17,0.05253828730800936
+102,Premium Automotive - Wide,Automotive,326,Premium,0.65,7.056075872576118
+103,Luxury Electronics - Natural,Electronics,2768,Luxury,5.54,0.41189177435724145
+104,Premium Electronics - Lose,Electronics,250,Premium,0.5,2.406881010326014
+105,Standard Skincare - No,Skincare,147,Standard,0.29,7.624177298169686
+106,Budget Home & Living - Throw,Home & Living,15,Budget,0.03,5.3056241461534945
+107,Budget Home & Living - Season,Home & Living,24,Budget,0.05,8.546662652444244
+108,Budget Skincare - Degree,Skincare,39,Budget,0.08,4.106895127288527
+109,Premium Skincare - Area,Skincare,600,Premium,1.2,0.7774408649783138
+110,Luxury Home & Living - Shoulder,Home & Living,1980,Luxury,3.96,7.560626031993078
+111,Budget Fashion - Participant,Fashion,37,Budget,0.07,0.409833830702645
+112,Budget Automotive - Light,Automotive,34,Budget,0.07,4.288478473503003
+113,Budget Home & Living - Guy,Home & Living,34,Budget,0.07,9.129275220686441
+114,Budget Fashion - Soldier,Fashion,29,Budget,0.06,2.8235046196080593
+115,Standard Fashion - Type,Fashion,55,Standard,0.11,9.164041691759428
+116,Budget Fashion - Between,Fashion,28,Budget,0.06,8.925916117854193
+117,Budget Automotive - Tend,Automotive,31,Budget,0.06,8.080096214259761
+118,Standard Electronics - Growth,Electronics,108,Standard,0.22,3.6003750087650332
+119,Budget Electronics - Soon,Electronics,7,Budget,0.01,7.031856363237578
+120,Luxury Fashion - This,Fashion,1509,Luxury,3.02,9.223374261343956
+121,Luxury Home & Living - Finally,Home & Living,2092,Luxury,4.18,2.8483788955534353
+122,Standard Skincare - Agency,Skincare,122,Standard,0.24,3.560711699926707
+123,Standard Skincare - Market,Skincare,96,Standard,0.19,2.8882402937241816
+124,Standard Automotive - Oil,Automotive,127,Standard,0.25,5.555345316429875
+125,Budget Electronics - Perhaps,Electronics,39,Budget,0.08,7.150207281121742
+126,Standard Home & Living - Hundred,Home & Living,128,Standard,0.26,2.7436824524091463
+127,Premium Automotive - This,Automotive,249,Premium,0.5,7.4748763251190455
+128,Premium Automotive - Foot,Automotive,729,Premium,1.46,6.779065491152924
+129,Standard Skincare - Police,Skincare,64,Standard,0.13,1.68187995130883
+130,Budget Skincare - Test,Skincare,21,Budget,0.04,9.689235689201492
+131,Premium Home & Living - Mission,Home & Living,311,Premium,0.62,3.9814738925504845
+132,Premium Skincare - Police,Skincare,800,Premium,1.6,6.314388463070931
+133,Luxury Fashion - Level,Fashion,1427,Luxury,2.85,6.790754038920817
+134,Standard Skincare - Bed,Skincare,144,Standard,0.29,5.084714524297505
+135,Standard Fashion - Do,Fashion,59,Standard,0.12,6.720122904747036
+136,Budget Skincare - Next,Skincare,31,Budget,0.06,4.195571469347737
+137,Premium Electronics - Head,Electronics,436,Premium,0.87,8.80492027586094
+138,Standard Skincare - War,Skincare,140,Standard,0.28,8.940079151784003
+139,Premium Fashion - Pass,Fashion,699,Premium,1.4,7.836726787915689
+140,Budget Fashion - Agree,Fashion,19,Budget,0.04,8.704574607282288
+141,Premium Electronics - And,Electronics,237,Premium,0.47,0.7398312204643764
+142,Budget Fashion - Others,Fashion,34,Budget,0.07,6.92521366433896
+143,Premium Automotive - Social,Automotive,367,Premium,0.73,9.469278057556505
+144,Budget Electronics - Edge,Electronics,37,Budget,0.07,9.50775059127249
+145,Luxury Home & Living - Force,Home & Living,4466,Luxury,8.93,4.966143387481824
+146,Standard Skincare - Matter,Skincare,99,Standard,0.2,6.024855195694543
+147,Luxury Electronics - Thus,Electronics,2271,Luxury,4.54,7.688817119483477
+148,Standard Automotive - Task,Automotive,57,Standard,0.11,8.501960017491255
+149,Premium Fashion - Almost,Fashion,445,Premium,0.89,8.467363080933087
+150,Premium Electronics - Support,Electronics,757,Premium,1.51,9.114947074604881
+151,Budget Electronics - Matter,Electronics,27,Budget,0.05,8.55188401745429
+152,Premium Automotive - Hear,Automotive,282,Premium,0.56,9.780882138921672
+153,Budget Skincare - Involve,Skincare,27,Budget,0.05,0.8878377478700616
+154,Premium Home & Living - Can,Home & Living,428,Premium,0.86,2.8609055225141136
+155,Budget Automotive - Already,Automotive,8,Budget,0.02,7.082823594211764
+156,Budget Home & Living - Field,Home & Living,35,Budget,0.07,3.4149807191111528
+157,Luxury Electronics - Gas,Electronics,2205,Luxury,4.41,2.876680628785897
+158,Budget Automotive - Think,Automotive,36,Budget,0.07,2.1397935068088767
+159,Premium Automotive - Out,Automotive,455,Premium,0.91,9.376371751534695
+160,Premium Home & Living - But,Home & Living,322,Premium,0.64,0.7356011811003027
+161,Standard Electronics - Structure,Electronics,113,Standard,0.23,7.124847199939815
+162,Premium Automotive - Theory,Automotive,225,Premium,0.45,8.505708796955739
+163,Standard Fashion - Million,Fashion,130,Standard,0.26,5.598664154860106
+164,Standard Home & Living - Mind,Home & Living,123,Standard,0.25,7.4957458506550925
+165,Budget Skincare - Floor,Skincare,19,Budget,0.04,0.23804670662845195
+166,Standard Fashion - Card,Fashion,115,Standard,0.23,2.3486243354960266
+167,Budget Automotive - Network,Automotive,16,Budget,0.03,8.633448038750997
+168,Premium Skincare - Any,Skincare,397,Premium,0.79,0.8967620411588684
+169,Budget Home & Living - Speak,Home & Living,40,Budget,0.08,2.488265963704185
+170,Standard Home & Living - Station,Home & Living,142,Standard,0.28,7.657887675078423
+171,Premium Fashion - Several,Fashion,484,Premium,0.97,5.852514474566628
+172,Standard Fashion - Tend,Fashion,137,Standard,0.27,0.869752352663441
+173,Premium Electronics - Go,Electronics,422,Premium,0.84,0.4228931494206001
+174,Standard Automotive - History,Automotive,150,Standard,0.3,8.750374232649689
+175,Premium Automotive - West,Automotive,265,Premium,0.53,2.0935329609071984
+176,Standard Fashion - Beat,Fashion,104,Standard,0.21,2.126281622275137
+177,Standard Electronics - One,Electronics,104,Standard,0.21,3.0217914766315945
+178,Budget Electronics - Prepare,Electronics,13,Budget,0.03,1.719614717214436
+179,Premium Skincare - Person,Skincare,560,Premium,1.12,9.042049959124515
+180,Budget Automotive - So,Automotive,30,Budget,0.06,8.397434758190025
+181,Premium Home & Living - Record,Home & Living,274,Premium,0.55,1.20101396100463
+182,Luxury Home & Living - Himself,Home & Living,4446,Luxury,8.89,6.709612350478501
+183,Budget Electronics - Reality,Electronics,40,Budget,0.08,7.854831811001791
+184,Budget Automotive - Child,Automotive,10,Budget,0.02,9.27484291518418
+185,Budget Fashion - Focus,Fashion,9,Budget,0.02,7.936992072799174
+186,Budget Skincare - Focus,Skincare,29,Budget,0.06,2.2823678519541635
+187,Budget Automotive - List,Automotive,31,Budget,0.06,2.627487749175775
+188,Standard Skincare - Far,Skincare,72,Standard,0.14,1.6954970539933267
+189,Budget Electronics - Painting,Electronics,33,Budget,0.07,6.092192094497358
+190,Premium Electronics - Present,Electronics,762,Premium,1.52,9.394047400202044
+191,Standard Automotive - Reason,Automotive,145,Standard,0.29,3.817173215455032
+192,Budget Home & Living - Attack,Home & Living,10,Budget,0.02,1.1209857105322074
+193,Standard Home & Living - Leader,Home & Living,134,Standard,0.27,8.78312733052981
+194,Standard Fashion - Radio,Fashion,139,Standard,0.28,6.746038794572807
+195,Premium Electronics - Color,Electronics,754,Premium,1.51,6.364125535101172
+196,Premium Skincare - Oil,Skincare,757,Premium,1.51,8.633147426943529
+197,Budget Skincare - Traditional,Skincare,35,Budget,0.07,7.74582083428018
+198,Budget Electronics - Value,Electronics,11,Budget,0.02,2.752325633411181
+199,Luxury Home & Living - Push,Home & Living,3964,Luxury,7.93,1.6581170764170972

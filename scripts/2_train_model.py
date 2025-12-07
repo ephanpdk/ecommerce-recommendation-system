@@ -6,20 +6,17 @@ import os
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score, silhouette_samples
 from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = "app/ml"
 os.makedirs(BASE_DIR, exist_ok=True)
 
-# 1. LOAD DATA
 df = pd.read_csv(f"{BASE_DIR}/dummy_ecommerce_clustered.csv")
 df_prods = pd.read_csv(f"{BASE_DIR}/products_dummy.csv")
 
-# --- PERBAIKAN PENTING DI SINI ---
-# Ubah 'product_name' jadi 'name' agar terbaca oleh Frontend HTML
-df_prods = df_prods.rename(columns={"product_name": "name"})
-# ---------------------------------
+if "product_name" in df_prods.columns:
+    df_prods = df_prods.rename(columns={"product_name": "name"})
 
 df["Monetary_Log"] = np.log1p(df["Monetary"])
 
@@ -34,7 +31,7 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
 pca = PCA(n_components=2)
-pca.fit(X_scaled)
+X_pca = pca.fit_transform(X_scaled)
 pca_var = [round(v * 100, 2) for v in pca.explained_variance_ratio_]
 
 elbow_curve = {}
@@ -56,9 +53,9 @@ for old, new in mapping.items():
 
 kmeans_final = KMeans(n_clusters=4, init=sorted_centers, n_init=1, random_state=42)
 kmeans_final.fit(X_scaled)
+final_clusters = kmeans_final.predict(X_scaled)
 df["Cluster"] = df["Temp"].map(mapping)
 
-# COSINE SIMILARITY REKOMENDASI
 prod_scaler = MinMaxScaler()
 prod_features = df_prods[['price', 'complexity_score']].values
 prod_vectors = prod_scaler.fit_transform(prod_features)
@@ -75,10 +72,8 @@ cluster_names = ["Newbie", "Window Shopper", "Loyalist", "Sultan"]
 for i in range(4):
     top_indices = similarity_matrix[i].argsort()[-6:][::-1]
     selected_prods = df_prods.iloc[top_indices].to_dict(orient="records")
-    
     for p in selected_prods:
         p['reason'] = f"Matches {cluster_names[i]} spending profile"
-        
     recommendations[i] = selected_prods
 
 centroids_real = scaler.inverse_transform(kmeans_final.cluster_centers_)
@@ -86,8 +81,28 @@ real_df = pd.DataFrame(centroids_real, columns=features)
 real_df["Monetary"] = np.expm1(real_df["Monetary_Log"]) 
 real_df = real_df.drop(columns=["Monetary_Log"])
 
+sample_indices = np.random.choice(X_scaled.shape[0], 200, replace=False)
+pca_scatter_data = []
+for i in sample_indices:
+    pca_scatter_data.append({
+        "x": round(float(X_pca[i, 0]), 2),
+        "y": round(float(X_pca[i, 1]), 2),
+        "cluster": int(final_clusters[i])
+    })
+
+corr_matrix = df[features].corr().round(2).values.tolist()
+
+sil_samples = silhouette_samples(X_scaled, final_clusters)
+sil_per_cluster = []
+for i in range(4):
+    score = sil_samples[final_clusters == i].mean()
+    sil_per_cluster.append(round(float(score), 3))
+
+feature_importance = np.abs(kmeans_final.cluster_centers_).mean(axis=0)
+feat_imp_sorted = sorted(zip(feature_readable, feature_importance), key=lambda x: x[1], reverse=True)
+
 metadata = {
-    "silhouette_score": round(silhouette_score(X_scaled, kmeans_final.labels_), 4),
+    "silhouette_score": round(silhouette_score(X_scaled, final_clusters), 4),
     "inertia": round(kmeans_final.inertia_, 2),
     "features": features,
     "feature_readable": feature_readable,
@@ -100,6 +115,12 @@ metadata = {
     "global_stats": {
         "mean": scaler.mean_.tolist(),
         "std": scaler.scale_.tolist()
+    },
+    "advanced_viz": {
+        "pca_scatter": pca_scatter_data,
+        "correlation_matrix": corr_matrix,
+        "silhouette_per_cluster": sil_per_cluster,
+        "feature_importance": {"labels": [x[0] for x in feat_imp_sorted], "data": [round(x[1],2) for x in feat_imp_sorted]}
     }
 }
 
@@ -110,4 +131,4 @@ joblib.dump(scaler, f"{BASE_DIR}/scaler_preproc.joblib")
 joblib.dump(kmeans_final, f"{BASE_DIR}/kmeans_k2.joblib")
 joblib.dump(recommendations, f"{BASE_DIR}/topN_by_cluster.joblib")
 
-print("Training Complete & Fixed Columns")
+print("Training Complete. Advanced Visualization Data Generated.")

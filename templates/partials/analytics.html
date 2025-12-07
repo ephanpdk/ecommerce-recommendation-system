@@ -1,81 +1,203 @@
-<div class="mb-8 border-b border-slate-200 pb-6 flex justify-between items-end">
-    <div>
-        <h2 class="text-3xl font-bold text-slate-900 tracking-tight">Model Evaluation</h2>
-        <p class="text-sm text-slate-500 mt-1">Performance metrics & centroid analysis</p>
-    </div>
-    <div class="flex gap-6">
-        <div class="text-right">
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Silhouette</div>
-            <div id="valSil" class="text-2xl font-mono font-bold text-emerald-600">-</div>
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="lg:col-span-2 bg-slate-900 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-3xl opacity-20 -mr-16 -mt-16 pointer-events-none"></div>
+            <div class="relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="bg-indigo-500/20 p-2 rounded-lg"><i class="fa-solid fa-chart-line text-indigo-400"></i></div>
+                    <h3 class="text-lg font-bold">Executive Summary</h3>
+                </div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                    Model berhasil mengelompokkan 1.000 user ke dalam 4 segmen perilaku distingtif dengan stabilitas struktur (Silhouette 0.29). 
+                    Sistem ini mengidentifikasi High-Value Customers (Sultan) dan Churn Risk secara otomatis, memungkinkan strategi marketing yang terukur.
+                </p>
+                <div class="grid grid-cols-3 gap-4 border-t border-slate-700/50 pt-6">
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Metric</div>
+                        <div class="font-bold text-white">K-Means++</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Features</div>
+                        <div class="font-bold text-white">RFM + Engagement</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Impact</div>
+                        <div class="font-bold text-emerald-400">Personalized</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="text-right pl-6 border-l border-slate-200">
-            <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Inertia</div>
-            <div id="valInertia" class="text-2xl font-mono font-bold text-indigo-600">-</div>
+
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center">
+            <h4 class="text-xs font-bold text-slate-500 uppercase mb-6 text-center">Model Performance</h4>
+            <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="text-2xl font-mono font-bold text-emerald-600" id="valSil">-</div>
+                        <div class="text-[10px] text-slate-400 font-bold uppercase">Silhouette Score</div>
+                    </div>
+                    <div class="h-10 w-10 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600"><i class="fa-solid fa-bullseye"></i></div>
+                </div>
+                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-emerald-500 h-1.5 rounded-full" style="width: 65%"></div>
+                </div>
+                <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                    <div>
+                        <div class="text-2xl font-mono font-bold text-indigo-600" id="valInertia">-</div>
+                        <div class="text-[10px] text-slate-400 font-bold uppercase">Inertia (Compactness)</div>
+                    </div>
+                    <div class="h-10 w-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-600"><i class="fa-solid fa-compress"></i></div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-    <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-        <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Method</div>
-        <div class="text-lg font-bold text-slate-700">K-Means++</div>
-    </div>
-    <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-        <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Clusters (K)</div>
-        <div class="text-lg font-bold text-blue-600">4</div>
-    </div>
-    <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-        <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Scaler</div>
-        <div class="text-lg font-bold text-slate-700">StandardScaler</div>
-    </div>
-    <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
-        <div class="text-[10px] uppercase font-bold text-slate-400 mb-1">Features</div>
-        <div class="text-lg font-bold text-slate-700">8</div>
-    </div>
-</div>
+    <div class="mb-8">
+        <h3 class="text-lg font-bold text-slate-900 mb-4">Segment Personas & Strategies</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white border-t-4 border-slate-400 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-seedling text-slate-400"></i>
+                    <h4 class="font-bold text-slate-700">Newbie</h4>
+                </div>
+                <ul class="text-xs text-slate-500 space-y-1 mb-4">
+                    <li>• Spend Rendah</li>
+                    <li>• Recency Tinggi (Jarang aktif)</li>
+                    <li>• Butuh Edukasi Produk</li>
+                </ul>
+                <div class="bg-slate-50 p-2 rounded border border-slate-100 text-[10px] font-bold text-slate-600">
+                    Strategy: Diskon Pengguna Baru & Barang Murah
+                </div>
+            </div>
 
-<div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
-    <div class="md:col-span-8 space-y-8">
-        <div class="grid grid-cols-2 gap-6">
+            <div class="bg-white border-t-4 border-blue-500 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-binoculars text-blue-500"></i>
+                    <h4 class="font-bold text-slate-700">Window Shopper</h4>
+                </div>
+                <ul class="text-xs text-slate-500 space-y-1 mb-4">
+                    <li>• Views Sangat Tinggi</li>
+                    <li>• Konversi Rendah</li>
+                    <li>• Suka Banding Harga</li>
+                </ul>
+                <div class="bg-blue-50 p-2 rounded border border-blue-100 text-[10px] font-bold text-blue-700">
+                    Strategy: Retargeting Ads & Limited Time Offer
+                </div>
+            </div>
+
+            <div class="bg-white border-t-4 border-emerald-500 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-handshake text-emerald-500"></i>
+                    <h4 class="font-bold text-slate-700">Loyalist</h4>
+                </div>
+                <ul class="text-xs text-slate-500 space-y-1 mb-4">
+                    <li>• Frekuensi Belanja Rutin</li>
+                    <li>• Spend Menengah</li>
+                    <li>• Stabil & Terprediksi</li>
+                </ul>
+                <div class="bg-emerald-50 p-2 rounded border border-emerald-100 text-[10px] font-bold text-emerald-700">
+                    Strategy: Reward Points & Bundle Deals
+                </div>
+            </div>
+
+            <div class="bg-white border-t-4 border-amber-500 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-crown text-amber-500"></i>
+                    <h4 class="font-bold text-slate-700">Sultan</h4>
+                </div>
+                <ul class="text-xs text-slate-500 space-y-1 mb-4">
+                    <li>• Spend Sangat Tinggi</li>
+                    <li>• Sangat Aktif (Engagement)</li>
+                    <li>• Sensitif Kualitas</li>
+                </ul>
+                <div class="bg-amber-50 p-2 rounded border border-amber-100 text-[10px] font-bold text-amber-700">
+                    Strategy: Upsell Premium & VIP Treatment
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+        <div class="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Elbow Curve</h4>
-                <div class="h-64 relative w-full">
+                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Elbow Curve (Optimal K)</h4>
+                <div class="h-48 relative w-full">
                     <canvas id="chart-elbow"></canvas>
                 </div>
             </div>
             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Centroid Radar</h4>
-                <div class="h-64 relative w-full">
+                <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">Cluster Centroids</h4>
+                <div class="h-48 relative w-full">
                     <canvas id="chart-radar"></canvas>
                 </div>
             </div>
         </div>
-        
-        <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-            <div class="bg-slate-50 px-6 py-3 border-b border-slate-200 font-bold text-xs text-slate-600 uppercase">Centroid Profiling</div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-xs text-left text-slate-600">
-                    <thead class="bg-white border-b border-slate-100 text-slate-400 uppercase font-semibold">
-                        <tr>
-                            <th class="px-6 py-3">Cluster</th>
-                            <th class="px-6 py-3 text-right">Monetary</th>
-                            <th class="px-6 py-3 text-right">Freq</th>
-                            <th class="px-6 py-3 text-right">Recency</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-centroids" class="divide-y divide-slate-50 text-slate-600 font-mono">
-                        <tr><td colspan="4" class="px-6 py-4 text-center italic">Loading data...</td></tr>
-                    </tbody>
-                </table>
+        <div class="md:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+            <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-4">User Distribution</h4>
+            <div class="h-48 relative w-full">
+                <canvas id="chart-pie"></canvas>
             </div>
         </div>
     </div>
-    
-    <div class="md:col-span-4">
-        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full flex flex-col justify-center">
-            <h4 class="text-xs font-bold text-slate-500 uppercase text-center mb-6">User Distribution</h4>
-            <div class="h-64 relative w-full">
-                <canvas id="chart-pie"></canvas>
+
+    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-8">
+        <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+            <h4 class="font-bold text-xs text-slate-600 uppercase">Centroid Profiling Data</h4>
+            <span class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded text-slate-400">Real Values (Inverse Scaled)</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left text-slate-600">
+                <thead class="bg-white border-b border-slate-100 text-slate-400 uppercase font-semibold">
+                    <tr>
+                        <th class="px-6 py-3">Cluster</th>
+                        <th class="px-6 py-3 text-right">Avg Monetary</th>
+                        <th class="px-6 py-3 text-right">Avg Frequency</th>
+                        <th class="px-6 py-3 text-right">Avg Recency</th>
+                    </tr>
+                </thead>
+                <tbody id="table-centroids" class="divide-y divide-slate-50 text-slate-600 font-mono">
+                    <tr><td colspan="4" class="px-6 py-4 text-center italic">Loading data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="bg-indigo-900 rounded-2xl p-8 text-white text-center shadow-xl">
+        <h3 class="text-lg font-bold mb-8">How The Recommendation Engine Works</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-indigo-700 -z-0 transform -translate-y-1/2 scale-x-90"></div>
+            
+            <div class="relative z-10 bg-indigo-900 p-2">
+                <div class="w-16 h-16 mx-auto bg-indigo-800 rounded-2xl flex items-center justify-center mb-4 border border-indigo-700 shadow-lg">
+                    <i class="fa-solid fa-user-tag text-2xl text-indigo-300"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1">1. Vectorization</h4>
+                <p class="text-[10px] text-indigo-300">User behavior converted to 8-dim feature vector</p>
+            </div>
+            
+            <div class="relative z-10 bg-indigo-900 p-2">
+                <div class="w-16 h-16 mx-auto bg-indigo-800 rounded-2xl flex items-center justify-center mb-4 border border-indigo-700 shadow-lg">
+                    <i class="fa-solid fa-layer-group text-2xl text-indigo-300"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1">2. Clustering</h4>
+                <p class="text-[10px] text-indigo-300">K-Means assigns user to nearest centroid</p>
+            </div>
+            
+            <div class="relative z-10 bg-indigo-900 p-2">
+                <div class="w-16 h-16 mx-auto bg-indigo-800 rounded-2xl flex items-center justify-center mb-4 border border-indigo-700 shadow-lg">
+                    <i class="fa-solid fa-filter text-2xl text-indigo-300"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1">3. Tier Mapping</h4>
+                <p class="text-[10px] text-indigo-300">Cluster matches product tiers (Budget vs Luxury)</p>
+            </div>
+            
+            <div class="relative z-10 bg-indigo-900 p-2">
+                <div class="w-16 h-16 mx-auto bg-indigo-800 rounded-2xl flex items-center justify-center mb-4 border border-indigo-700 shadow-lg">
+                    <i class="fa-solid fa-magnifying-glass-dollar text-2xl text-emerald-400"></i>
+                </div>
+                <h4 class="font-bold text-sm mb-1 text-emerald-400">4. Similarity</h4>
+                <p class="text-[10px] text-indigo-300">Cosine Similarity finds best product match</p>
             </div>
         </div>
     </div>

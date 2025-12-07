@@ -1,201 +1,184 @@
+Berikut adalah **README.md** yang telah diperbarui secara menyeluruh. Dokumen ini mencakup fitur-fitur baru yang telah kita implementasikan (Input `Avg Items` & `Unique Products`, Visualisasi Radar Chart yang diperbaiki, Bar Risiko Migrasi, dan Dataset Produk Nyata).
 
----
+Silakan copy kode di bawah ini ke file `README.md` Anda.
 
-# 🧠 **SmartShop AI – Intelligent Retail Recommendation System**
+-----
 
-**End-to-End Machine Learning + Web Application (FastAPI + Scikit-Learn)**
+# 🧠 **Intelligent Retail Segmentation & Recommendation Engine**
 
-> Sistem rekomendasi e-commerce berbasis **Customer Segmentation (K-Means)** dan **Content-Based Product Recommendation (Cosine Similarity)**, lengkap dengan **Explainable AI (XAI)** serta implementasi web real-time.
+**End-to-End Machine Learning System (FastAPI + Scikit-Learn + Docker)**
 
-![Tech Stack](https://img.shields.io/badge/Stack-FastAPI%20%7C%20Docker%20%7C%20Scikit--Learn%20%7C%20Pandas%20%7C%20Chart.js-blue)
+> Sistem kecerdasan ritel yang menggabungkan **Unsupervised Learning (K-Means++)** untuk segmentasi pelanggan dan **Content-Based Filtering (Cosine Similarity)** untuk rekomendasi produk. Dilengkapi dengan dashboard interaktif untuk simulasi strategi bisnis secara real-time.
 
----
+-----
 
 ## 📌 **Overview**
 
-SmartShop AI adalah project machine learning end-to-end yang mensimulasikan pipeline retail modern:
+Web ini bukan sekadar model prediksi, melainkan sebuah **Sistem Pendukung Keputusan (DSS)** yang mensimulasikan alur kerja data science di industri *e-commerce*:
 
-* Membuat dataset perilaku user (synthetic but structured)
-* Melatih model K-Means berbasis RFM & user-behavior features
-* Menghasilkan rekomendasi produk berbasis cosine similarity
-* Mengintegrasikan model ke API real-time menggunakan FastAPI
-* Menampilkan visualisasi model, PCA, Elbow, Radar Chart melalui web dashboard
-* Menyediakan Explainable AI: alasan matematis kenapa user masuk cluster tertentu
+1.  **Data Ingestion:** Mengolah data transaksi sintetik yang meniru pola dunia nyata (Log-transformed & Scaled).
+2.  **User Profiling:** Mengelompokkan user ke dalam 4 persona perilaku (*Newbie, Window Shopper, Loyalist, Sultan*).
+3.  **Recommendation Engine:** Mencocokkan profil user dengan database produk nyata (Electronics, Fashion, Skincare) menggunakan vektor kesamaan.
+4.  **Business Intelligence:** Menampilkan risiko *churn*, potensi *upgrade* segmen, dan metrik evaluasi model dalam satu dashboard.
 
-Sistem ini dirancang supaya **siap presentasi**, **anti-bantai**, dan **bercita rasa industri**.
+Sistem ini dirancang dengan arsitektur **Microservices (Dockerized)** agar mudah di-deploy dan dipresentasikan.
 
----
+-----
 
-## 🏗️ **Arsitektur Sistem (End-to-End ML Pipeline)**
+## 🏗️ **Arsitektur Sistem (ML Pipeline)**
 
-1. **Data Generator (1_generate_data.py)**
-   ✦ Membuat 1000 user dengan pola perilaku ekstrem (Newbie, Window Shopper, Loyalist, Sultan)
-   ✦ Membuat product dataset 50 items
-   ✦ Menyimpan sebagai CSV untuk training
+### 1\. Data Generator & Preprocessing
 
-2. **Model Training (2_train_model.py)**
-   ✦ Preprocessing
+  * **Dataset:** 1.000 User & 100 Produk Nyata (e.g., iPhone 15, SK-II, Nike Air Jordan).
+  * **Feature Engineering:** Menggunakan 8 fitur utama:
+      * *Transactional:* Monetary (Log Transformed), Frequency, Recency.
+      * *Behavioral:* Avg Items/Order, Unique Products.
+      * *Engagement:* Page Views, Add to Cart, Wishlist.
+  * **Normalization:** StandardScaler (Z-Score) untuk Clustering, MinMaxScaler untuk Visualisasi Radar.
 
-   * Log transform Monetary
-   * StandardScaler (Z-score)
-     ✦ Clustering
-   * K-Means++ (k=4 ditentukan via Elbow Method)
-     ✦ Product Recommendation
-   * Cosine similarity → Top-N tiap cluster
-     ✦ Saves:
-   * `scaler_preproc.joblib`
-   * `kmeans_k2.joblib`
-   * `topN_by_cluster.joblib`
-   * `model_metrics.json`
+### 2\. Machine Learning Core
 
-3. **Backend FastAPI**
-   ✦ Endpoint:
+  * **Clustering:** Algoritma **K-Means++** dengan $k=4$ (ditentukan via Elbow Method).
+  * **Recommendation:** **Cosine Similarity** antara vektor Centroid User dan vektor Atribut Produk (Harga & Kompleksitas).
+  * **Explainability:** Menghitung *Feature Importance* global untuk mengetahui faktor penentu segmen.
 
-   * `/auth/*` → JWT Authentication
-   * `/cluster/metrics` → Model insight
-   * `/recommend/user` → Prediksi cluster + rekomendasi produk
-     ✦ Logging hasil prediction ke database
+### 3\. Backend & Serving
 
-4. **Frontend Web Dashboard**
-   ✦ Form input simulasi user
-   ✦ Hasil prediksi
-   ✦ Feature contribution (Z-score)
-   ✦ Confidence score
-   ✦ Visualisasi: PCA, Elbow, Radar, Cluster Dist.
-   ✦ Semua logic di `scripts.html`
+  * **Framework:** FastAPI (Asynchronous).
+  * **Endpoints:** REST API untuk prediksi real-time dan autentikasi (JWT).
+  * **Storage:** Menyimpan model (`.joblib`) dan metrik visualisasi (`.json`) untuk performa tinggi (tanpa training ulang saat request).
 
----
+### 4\. Frontend Dashboard
+
+  * **Stack:** HTML5, TailwindCSS, Chart.js.
+  * **Fitur:** Simulator Input Slider, Radar Chart (Normalized), Risk Gauge, dan Session Logging.
+
+-----
 
 ## 🚀 **Fitur Utama**
 
-### 🎯 **1. Real-Time Segmentation**
+### 🎯 **1. 8-Parameter Real-Time Simulation**
 
-Model memetakan user ke 4 persona:
+Dashboard memungkinkan simulasi profil user dengan mengubah 8 variabel input secara langsung:
 
-* **Newbie** – Spending rendah, recency tinggi
-* **Window Shopper** – Page view tinggi, transaksi rendah
-* **Loyalist** – Sering beli, stabil
-* **Sultan** – High spender, high lifetime value
+  * `Total Spend`, `Frequency`, `Recency`
+  * `Avg Items`, `Unique Products`
+  * `Views`, `Add to Cart`, `Wishlist`
 
-### 🧠 **2. Explainable AI (XAI)**
+### 🧠 **2. Web Segmentation & Persona**
 
-Sistem menjelaskan:
+Model memetakan user ke 4 segmen strategi:
 
-* fitur apa yang dominan (z-score)
-* kenapa user masuk cluster itu
-* bandingannya dengan cluster lain
-* anomaly detection (misal VIP mau churn)
+  * 🔵 **Newbie:** Butuh edukasi & diskon akuisisi.
+  * 🔵 **Window Shopper:** Butuh *retargeting* (banyak lihat, jarang beli).
+  * 🟢 **Loyalist:** Butuh *reward points* (belanja rutin).
+  * 🟠 **Sultan:** Butuh layanan VIP (spending & engagement tinggi).
 
-### 🛒 **3. Product Recommendation (Cosine Similarity)**
+### 📈 **3. Advanced Analytics & Insights**
 
-Top-N produk berdasarkan:
+  * **Migration Risk:** Bar indikator peluang user turun kelas (*Downgrade*).
+  * **Upgrade Potential:** Bar indikator peluang user naik kelas (*Upgrade*).
+  * **Visualisasi Validasi:**
+      * *Elbow Curve* & *Silhouette Score* (Validasi K).
+      * *PCA Scatter Plot* (2D Projection).
+      * *Radar Chart* (DNA Cluster - Normalized 0-1).
 
-* kedekatan user-feature vs product-feature
-* cluster persona
-* product embedding hasil preprocessing
+### 🛒 **4. Context-Aware Recommendations**
 
-### 📊 **4. Complete Model Visualization**
+Produk direkomendasikan berdasarkan **Tier Matching**:
 
-* Elbow curve
-* Silhouette score
-* PCA 2D
-* Radar chart centroid
-* Cluster distribution
+  * User *Sultan* → Produk *Luxury* (e.g., MacBook Pro).
+  * User *Newbie* → Produk *Budget* (e.g., USB Cable).
 
-### 🔐 **5. Security & Logging**
+-----
 
-* JWT Auth
-* Database logging setiap prediksi
-* Fail-safe model loader
+## 📁 **Struktur Direktori**
 
----
-
-## 📁 **Struktur Folder (Ringkas)**
-
-```
-app/
- ├── ml/
- │    ├── 1_generate_data.py
- │    ├── 2_train_model.py
- │    ├── dummy_ecommerce_clustered.csv
- │    ├── products_dummy.csv
- │    ├── scaler_preproc.joblib
- │    ├── kmeans_k2.joblib
- │    ├── topN_by_cluster.joblib
- │    └── model_metrics.json
- ├── routers/
- ├── models/
- ├── schemas/
- ├── database.py
- ├── main.py
-templates/
- ├── dashboard.html
- ├── scripts.html
+```text
+ecommerce-recommendation-system/
+├── app/
+│   ├── ml/                     # OTAK SISTEM (Machine Learning)
+│   │   ├── 1_generate_data.py  # Script generate data dummy + real products
+│   │   ├── 2_train_model.py    # Training K-Means, PCA, & Cosine Sim
+│   │   ├── model_metrics.json  # Data untuk visualisasi frontend
+│   │   └── *.joblib            # Model yang sudah dilatih
+│   ├── routers/                # API Endpoints (Auth, Recommend)
+│   ├── templates/              # Frontend Files
+│   │   ├── dashboard.html      # Main Layout
+│   │   └── partials/           # Modular HTML (Simulator, Results, Analytics)
+│   └── main.py                 # Entry Point FastAPI
+├── docker-compose.yml          # Orchestration
+├── Dockerfile                  # Image Config
+└── requirements.txt            # Python Dependencies
 ```
 
----
+-----
 
-## 🛠️ **Cara Menjalankan (Docker Recommended)**
+## 🛠️ **Instalasi & Cara Menjalankan**
 
-Pastikan Docker Desktop sudah berjalan.
+Disarankan menggunakan **Docker** agar lingkungan berjalan stabil tanpa konflik dependensi.
+
+### Langkah 1: Clone Repository
 
 ```bash
-# 1. Clone Repository
-git clone https://github.com/USERNAME/gayadouze.git
-cd gayadouze
-
-# 2. Build & Run Container
-docker compose up --build
-
-# 3. (Opsional) Generate ulang dataset + training
-docker compose exec web python app/ml/1_generate_data.py
-docker compose exec web python app/ml/2_train_model.py
+git clone https://github.com/USERNAME/ecommerce-recommendation-system.git
+cd ecommerce-recommendation-system
 ```
 
-Akses Web Dashboard:
-👉 `http://localhost:8000`
+### Langkah 2: Jalankan Container
 
-Akses Docs (Swagger):
-👉 `http://localhost:8000/docs`
-
----
-
-## 🧪 **Endpoint Utama**
-
-### 🔍 Predict + Recommend
-
-```
-POST /recommend/user
+```bash
+docker-compose up -d --build
 ```
 
-### 📊 Model Metrics
+### Langkah 3: Generate Data & Latih Model (PENTING\!)
 
+Lakukan ini pertama kali untuk memastikan data produk dan metrik visualisasi terbentuk.
+
+```bash
+# Generate Dataset (Produk Nyata & User Dummy)
+docker-compose exec backend python app/ml/1_generate_data.py
+
+# Train Model & Hitung Metrik Visualisasi
+docker-compose exec backend python app/ml/2_train_model.py
+
+# Restart Service untuk memuat model baru
+docker-compose restart backend
 ```
-GET /cluster/metrics
-```
 
-### 🔑 Authentication
+-----
 
-```
-POST /auth/login
-POST /auth/register
-```
+## 🖥️ **Akses Aplikasi**
 
----
+| Layanan | URL | Keterangan |
+| :--- | :--- | :--- |
+| **Web Dashboard** | `http://localhost:8000` | UI Utama untuk simulasi & analisis |
+| **API Documentation** | `http://localhost:8000/docs` | Swagger UI untuk testing API |
+| **Database Metrics** | `http://localhost:8000/cluster/metrics` | JSON Output statistik model |
 
-## 📚 **Teknologi yang Digunakan**
+-----
 
-* Python 3.11
-* FastAPI
-* Scikit-Learn
-* Pandas / NumPy
-* Joblib
-* Uvicorn
-* PostgreSQL
-* SQLAlchemy
-* JWT Auth
-* TailwindCSS
-* Chart.js
+## 🧪 **Contoh Skenario Uji Coba**
 
----
+1.  Buka Dashboard.
+2.  Masuk ke menu **Simulator**.
+3.  Set **Total Spend** ke `$4000` dan **Frequency** ke `40`.
+4.  Klik **Predict Persona**.
+5.  **Hasil:** User terdeteksi sebagai **Sultan**. Rekomendasi produk akan menampilkan barang mahal (Luxury).
+6.  Geser **Recency** menjadi `90 days` (jarang aktif).
+7.  **Hasil:** Bar **Migration Risk** akan meningkat merah (Indikasi Churn).
 
+-----
+
+## 📚 **Tech Stack Detail**
+
+  * **Language:** Python 3.10+
+  * **ML Libraries:** Scikit-Learn (KMeans, PCA, Preprocessing), Pandas, NumPy.
+  * **Backend:** FastAPI, Uvicorn, Pydantic.
+  * **Frontend:** Jinja2 Templates, TailwindCSS (CDN), Chart.js (Visualisasi).
+  * **Containerization:** Docker & Docker Compose.
+
+-----
+
+**Copyright © 2025 Analytica Solutions.**
+*Project ini dibuat untuk tujuan demonstrasi akademis dan purwarupa sistem rekomendasi ritel.*
